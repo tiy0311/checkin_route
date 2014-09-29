@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CHECK-IN ROUTE</title>
+
+    <!-- BLOCK: Loading libraries -->
+    <!--script src="./your_secret.js"></script>
+    <script src="../your_secret.js"></script-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+    <script src="//www.parsecdn.com/js/parse-1.3.0.min.js"></script>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <!-- ENDBLOCK: Loading libraries -->
+
+</head>
+<body style="background-image: url(http://subtlepatterns.com/patterns/wavegrid.png)">
+    <!-- BLOCK: FB SDK initialization -->
+    <div id="fb-root"></div>
+    <!-- ENDBLOCK: FB SDK initialization -->
+
+    <!-- BLOCK: Your playground -->
+
+    <!-- Button for login to Facebook -->
+    <div id="my-html-playground" class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <a id="brand" class="navbar-brand" href="#">
+                <span class="glyphicon glyphicon-map-marker"></span>
+                Check-in Route
+            </a>
+            <div id="my-login-control" style="display:bolck">
+                <button id="my-login-button" type="button" class="btn btn-default navbar-btn">
+                    <span class="glyphicon glyphicon-hand-right"></span>
+                    &nbsp;&nbsp;Login with Facebook&nbsp;
+                </button>
+                <p class="navbar-text" id="my-logout-message">&nbsp;&nbsp;</p>
+            </div>
+            <div id="my-logout-control" style="display:none">
+                <button id="my-logout-button" type="button" class="btn btn-default navbar-btn">
+                    <span class="glyphicon glyphicon-off"></span>
+                    &nbsp;&nbsp;Logout&nbsp;
+                </button>
+                <p class="navbar-text" id="my-login-message">&nbsp;&nbsp;</p>
+            </div>
+        </nav>
+
+        <!-- Profile Area -->
+        <div id="my-profile" class="row" style="display:none;margin-bottom:50px">
+            <div class="col-md-3">
+                <!-- Profile Picture -->
+                <img id="my-profile-picture" class="img-thumbnail" src="" alt="">
+            </div>
+            <div class="col-md-9">
+                <!-- Profile Information -->
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd id="my-profile-name"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Username</dt>
+                    <dd id="my-profile-username"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Gender</dt>
+                    <dd id="my-profile-gender"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Birthday</dt>
+                    <dd id="my-profile-birthday"></dd>
+                </dl>
+                <dl class="dl-horizontal">
+                    <dt>Facebook ID</dt>
+                    <dd id="my-profile-facebook-id"></dd>
+                </dl>
+            </div>
+        </div>
+
+        <!--click to fetch-->
+        <div id="click-to-fetch" class="col-md-9" style="display:none; margin-bottom:20px">
+            <button id="from-locations-button" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span>
+                &nbsp;&nbsp;Fetch From Locations&nbsp;&nbsp;
+             </button>
+             <button id="maps" class="btn btn-info" style="margin-left:2em">
+                <span class="glyphicon glyphicon-globe"></span>
+                &nbsp;&nbsp;Visualization&nbsp;&nbsp;
+             </button>
+            <!--button id="from-posts-button" class="btn btn-info"> From Posts </button-->
+        </div>
+
+        <!--table-->
+        <div id="location-div" style="display:none">
+            <table class="table table-hover table-bordered" style="margin-top:30px">
+                <thead id="thead">
+                    <tr>
+                        <th width="2%" style="text-align:center">#</th>
+                        <th width="12%" style="text-align:center">Id</th>
+                        <th width="18%" style="text-align:center">Create time (GMT +0800)</th>
+                        <th width="5%" style="text-align:center">From</th>
+                        <th width="10%" style="text-align:center">Tags</th>
+                        <th width="20%" style="text-align:center">Place</th>
+                        <th width="11%" style="text-align:center">Longitude</th>
+                        <th width="11%" style="text-align:center">Latitude</th>         
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                <!--
+
+                -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="maps-div" style="width: 1200px; height: 870px; display:none">
+        </div>
+
+    </div>
+
+    <!-- ENDBLOCK: Your playground -->
+
+    <!-- BLOCK: Your script playground -->
+    <script id="my-script-playground">
+
+                            // application id                           // Javascript Key
+        Parse.initialize("yZpmiPeLmoZJxU65MP0N9DaahZmWlHtw7Tz7TxQh", "3lVzYbZerRWPatDPQA4RCnbK29AMhNdqRG245FdF");
+
+        // initialization
+
+        var ACCESS_TOKEN;
+        var userid;
+        var n=0;
+
+        window.fbAsyncInit = function() {
+            // init the FB JS SDK
+            //FB.init({
+            Parse.FacebookUtils.init({ // this line replaces FB.init({
+                appId      : '231421070390192',                        // App ID from the app dashboard //checkins:231421070390192 // Lab:699947756683654
+                cookie     : true,                                 // Allowed server-side to fetch fb auth cookie
+                status     : true,                                 // Check Facebook Login status
+                xfbml      : true,                                 // Look for social plugins on the page
+                version    : 'v2.0'
+            });
+
+            // Additional initialization code such as adding Event Listeners goes here
+            window.fbLoaded();
+        };
+
+        // Load the SDK asynchronously
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            //js.src = "http://connect.facebook.net/en_US/all.js";
+            // Debug version of Facebook JS SDK
+            js.src = "http://connect.facebook.net/en_US/all/debug.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+
+        $("#my-logout-message").html("Hi, please login with Facebook.");
+
+        window.fbLoaded = function(){
+
+            (function() {
+                var e = document.createElement('script'); e.async = true;
+                e.src = document.location.protocol 
+                    + '//connect.facebook.net/en_US/all.js';
+                document.getElementById('fb-root').appendChild(e);
+                console.log("all.js");
+            }());
+
+            FB.getLoginStatus(function(response) {
+
+                // if the user has logged in
+                if (response.status === 'connected') {
+                    var loginControlDiv=document.getElementById("my-login-control");
+                    loginControlDiv.style.display="none";
+                    var logoutControlDiv=document.getElementById("my-logout-control");
+                    logoutControlDiv.style.display="block";
+
+                    n=1;
+                    console.log('n='+n);
+
+                    // when user has been logged in, this block will be triggered.
+                    var msg = "Hi, You've logged in.";
+                    $("#my-login-message").html(msg);
+                    console.log("Your login response:");
+                    console.log(response);  // 這裡的authResponse裡有access_token!
+
+                    // get access token
+                    ACCESS_TOKEN=response.authResponse.accessToken;
+                    console.log('ACCESS_TOKEN: '+ACCESS_TOKEN);
+
+                    // get user id
+                    userid=response.authResponse.userID;
+                    console.log('userid: '+userid);
+
+                    // fetch the profile
+                    var ProfileDiv=document.getElementById("my-profile");
+                    ProfileDiv.style.display="block";
+                    fetch_my_profile();
+
+                    // show the buttons
+                    var ButtonsDiv=document.getElementById("click-to-fetch");
+                    ButtonsDiv.style.display="block";
+                
+                } else if (response.status === 'not_authorized') {
+                    //要求使用者登入，索取publish_actions權限
+
+                    Parse.FacebookUtils.logIn("user_tagged_places,user_photos,user_status,user_about_me,user_birthday,read_stream", {
+
+                        //n=3;
+                        //console.log('n='+n);
+
+                        success: function(user) {
+                            if (!user.existed()) {
+                                alert("User signed up and logged in through Facebook!");
+                                FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                    n=4;
+                                    console.log('n='+n);
+                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                });
+                                window.location.reload();
+                            } else {
+                                alert("User logged in through Facebook!");
+                                    FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                    n=4;
+                                    console.log('n='+n);
+                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                });
+                                window.location.reload();
+                            }
+                        },
+                        error: function(user, error) {
+                            alert("User cancelled the Facebook login or did not fully authorize.");
+                        }
+                    }); // end parse.fb.login
+
+                } else {
+                    //同樣要求使用者登入
+                    Parse.FacebookUtils.logIn("user_tagged_places,user_photos,user_status,user_about_me,user_birthday,read_stream", {
+
+                        //n=3;
+                        //console.log('n='+n);
+
+                        success: function(user) {
+                            if (!user.existed()) {
+                                alert("User signed up and logged in through Facebook!");
+                                FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                    n=4;
+                                    console.log('n='+n);
+                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                });
+                                window.location.reload();
+                            } else {
+                                alert("User logged in through Facebook!");
+                                    FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                    n=4;
+                                    console.log('n='+n);
+                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                });
+                                window.location.reload();
+                            }
+                        },
+                        error: function(user, error) {
+                            alert("User cancelled the Facebook login or did not fully authorize.");
+                        }
+                    }); // end parse.fb.login
+
+                }   // end else
+
+            });
+            
+            $("#brand").click(function(){
+                location.reload();
+            });
+
+            // define the action when user clicked the login button.
+            
+            $("#my-login-button").click(function(){
+                FB.getLoginStatus(function(response) {
+
+                    // if the user has logged in
+                    if (response.status === 'connected') {
+                        var loginControlDiv=document.getElementById("my-login-control");
+                        loginControlDiv.style.display="none";
+                        var logoutControlDiv=document.getElementById("my-logout-control");
+                        logoutControlDiv.style.display="block";
+
+                        n=1;
+                        console.log('n='+n);
+
+                        // when user has been logged in, this block will be triggered.
+                        var msg = "Hi, You've logged in.";
+                        $("#my-login-message").html(msg);
+                        console.log("Your login response:");
+                        console.log(response);  // 這裡的authResponse裡有access_token!
+
+                        // get access token
+                        ACCESS_TOKEN=response.authResponse.accessToken;
+                        console.log('ACCESS_TOKEN: '+ACCESS_TOKEN);
+
+                        // get user id
+                        userid=response.authResponse.userID;
+                        console.log('userid: '+userid);
+
+                        // fetch the profile
+                        var ProfileDiv=document.getElementById("my-profile");
+                        ProfileDiv.style.display="block";
+                        fetch_my_profile();
+
+                        // show the buttons
+                        var ButtonsDiv=document.getElementById("click-to-fetch");
+                        ButtonsDiv.style.display="block";
+                
+                    } else if (response.status === 'not_authorized') {
+                        //要求使用者登入，索取publish_actions權限
+                        Parse.FacebookUtils.logIn("user_tagged_places,user_photos,user_status,user_about_me,user_birthday,read_stream", {
+
+                            //n=3;
+                            //console.log('n='+n);
+
+                            success: function(user) {
+                                if (!user.existed()) {
+                                    alert("User signed up and logged in through Facebook!");
+                                    FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                        n=4;
+                                        console.log('n='+n);
+                                        console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                    });
+                                    window.location.reload();
+                                } else {
+                                    alert("User logged in through Facebook!");
+                                        FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                        n=4;
+                                        console.log('n='+n);
+                                        console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                    });
+                                    window.location.reload();
+                                }
+                            },
+                            error: function(user, error) {
+                                alert("User cancelled the Facebook login or did not fully authorize.");
+                            }
+                        }); // end parse.fb.login
+    
+                    } else {
+                        //同樣要求使用者登入
+                        Parse.FacebookUtils.logIn("user_tagged_places,user_photos,user_status,user_about_me,user_birthday,read_stream", {
+
+                            //n=3;
+                            //console.log('n='+n);
+
+                            success: function(user) {
+                                if (!user.existed()) {
+                                    alert("User signed up and logged in through Facebook!");
+                                    FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                        n=4;
+                                        console.log('n='+n);
+                                        console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                    });
+                                    window.location.reload();
+                                } else {
+                                    alert("User logged in through Facebook!");
+                                        FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                        n=4;
+                                        console.log('n='+n);
+                                        console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                    });
+                                    window.location.reload();
+                                }
+                            },
+                            error: function(user, error) {
+                                alert("User cancelled the Facebook login or did not fully authorize.");
+                            }
+                        }); // end parse.fb.login
+                        
+                    }   // end else
+
+                });     // end fb.getLoginStatus
+            });     // end login btn click
+
+            $("#my-logout-button").click(function(){
+                n=6;
+                console.log('n='+n);    // 按了logout後，n=6
+            
+                FB.logout(function(response){
+                    FB.Event.subscribe('auth.logout', function(response) {
+                        if (response.status!="connected" && response.authResponse){ // if logged out
+                            var logoutControlDiv=document.getElementById("my-login-control");
+                            logoutControlDiv.style.display="block";
+                            var loginControlDiv=document.getElementById("my-logout-control");
+                            loginControlDiv.style.display="none";
+
+                            n=2;
+                            console.log('n='+n);
+
+                            console.log("Your logout response:");
+                            console.log(response);
+                        }
+                        alert('You are logging out. Bye!');
+                    });
+                });
+
+                location.reload();  // refresh
+            });
+
+            $("#from-locations-button").click(function(){
+                console.log('Now you click the locations button.....');
+                var LocationDiv=document.getElementById("location-div");
+                LocationDiv.style.display="block";
+
+                setCookie("ACCESS_TOKEN", ACCESS_TOKEN);    
+
+                console.log('userid: '+userid);             // correct
+                console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
+                fbget(userid, ACCESS_TOKEN);
+            });
+
+            $("#maps").click(function(){
+                console.log('Now you click the Visualization button.....');
+                var LocationDiv=document.getElementById("location-div");
+                LocationDiv.style.display="none";
+                console.log("location-div:none");
+                var MapsDiv=document.getElementById("maps-div");
+                MapsDiv.style.display="block";
+
+                setCookie("ACCESS_TOKEN", ACCESS_TOKEN);    
+
+                console.log('userid: '+userid);             // correct
+                console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
+                //fbget(userid, ACCESS_TOKEN);
+                fbgetMap(userid, ACCESS_TOKEN);
+            });
+
+            /*
+            $("#from-posts-button").click(function(){
+                console.log('Now you click the posts button.....');
+                var ContainerDiv=document.getElementById("container");
+                ContainerDiv.style.display="block";
+
+                setCookie("ACCESS_TOKEN", ACCESS_TOKEN);    
+
+                console.log('userid: '+userid);             // correct
+                console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
+                fbget_posts(userid, ACCESS_TOKEN);
+            });
+            */
+
+            function setCookie(cname,cvalue)
+            {
+                var d = new Date();
+                d.setTime(d.getTime()+(60*60*1000));
+                var expires = "expires="+d.toGMTString();
+                document.cookie = cname+"="+cvalue+"; "+expires;
+            }
+
+            var fetch_my_profile = function () {
+                /*
+                Fetching profile information.
+                For more detail, please vist the following url:
+
+                (Graph API: User documentation)
+                https://developers.facebook.com/docs/graph-api/reference/user/
+                */
+                FB.api('/me', function(response) {
+
+                    $("#my-profile-name").html(response.name);
+                    $("#my-profile-username").html(response.username);
+                    $("#my-profile-gender").html(response.gender);
+                    $("#my-profile-birthday").html(response.birthday);
+                    $("#my-profile-facebook-id").html(response.id);
+
+
+                    /*
+                    var user = Parse.Object.extend("User");
+                    user.set("fb_name",response.name);
+                    user.set("fb_username",response.username);
+                    user.set("fb_gender",response.gender);
+                    user.set("fb_birthday",response.birthday);
+                    user.set("fb_id",response.id)
+                    */
+
+                    alert('Hello ' + response.name + ' ^_^');
+                });
+
+                /*
+                Fetching profile picture from Facebook.
+                For more detail, please visit the following url:
+
+                (Graph API: User/Picture reference)
+                https://developers.facebook.com/docs/graph-api/reference/user/picture/
+                */
+                FB.api('/me/picture?width=150', function(response) {
+                    var my_picture_url = response.data.url;
+
+                    $("#my-profile-picture").attr('src', my_picture_url);
+                });
+
+            };
+
+            var fetch_photos = function (){
+                FB.api("/me/photos" , function (response) {
+                    var photo_id = response.id;
+
+                    $("#places-from-photos").html(photo_id);
+
+                    if (response && !response.error) {
+                        /* handle the result */
+
+                    }
+                });
+            };
+
+        };
+    </script>
+    <!-- ENDBLOCK: Your script playground -->
+
+    <script> 
+
+        var N=0;
+        function fbget(userid, token) {
+
+            console.log("in fbget()");
+  
+            var last_tags_length;
+            var post_counter = 0;
+            //var created_time;
+            console.log(userid);
+
+            FB.api("/v1.0/"+userid+"/locations?fields=from,tags,place,created_time&limit=250",
+            function (response) {
+
+    
+                if(response && !response.error) {      
+                    var data = response;
+
+                    console.log('data.data.length: '+data.data.length);
+                    console.log('in fbget_locations and the data is');
+                    console.log(data);
+                    //console.dir(response);
+
+                    ++N;
+                    console.log('NN='+N);   // NN=2
+
+                    /*
+                    console.log('paging:');
+                    console.log(data.paging.next);
+                    var next_page=data.paging.next;
+                    console.log('   next_page:');
+                    console.log(next_page);
+                    */
+
+                    for(var i = 0;i < data.data.length;i++){
+                        var post_id = data.data[i].id;
+                        //created_time = new Date(data.data[i].created_time).toLocaleString();
+                        console.log("post_id"+post_id);
+                        //console.log("created_time"+created_time);
+
+                        FB.api("/"+post_id, function (response) {
+        
+                            if(response && !response.error) {
+                                //console.log("in fbgetMMM");      
+                                //console.log(response);
+                                //addIntoDB(response,created_time);
+                                addIntoDB(response);
+
+                            }   // end if
+                        }); // end FB.api
+                    }   // end for
+
+                    //var tbody = document.getElementById("tbody");
+                    //tbody.innerHTML = "";
+
+                    //var post_place;
+                    //var post_longitude;
+                    //var post_latitude;
+
+                        /*
+                        var post_id = data.data[i].id;
+                        var post_from = data.data[i].from.name;
+
+                        
+                        var post_tags = [];
+                        var post_tags_length;
+                        if(data.data[i].tags != null){
+                            post_tags_length = data.data[i].tags.data.length;
+                            for(var j = 0; j < post_tags_length; j++){
+                                post_tags.push(data.data[i].tags.data[j].name);
+                            }
+                        }
+                        */
+/*
+                      // 跳過重複的地標
+                        if(data.data[i].place != null && 
+                            data.data[i].tags != null &&
+                            post_place != data.data[i].place.name && 
+                            post_longitude != data.data[i].place.location.longitude && 
+                            post_latitude != data.data[i].place.location.latitude){
+                            post_place = data.data[i].place.name;
+                            post_longitude = data.data[i].place.location.longitude;
+                            post_latitude = data.data[i].place.location.latitude;
+                        } else {
+                            continue;
+                        }
+*/
+                    /*
+                    
+                        if(data.data[i].place != null){
+                            post_place = data.data[i].place.name;
+                            post_longitude = data.data[i].place.location.longitude;
+                            post_latitude = data.data[i].place.location.latitude;
+                        } else {
+                            continue;
+                        }
+                    
+                        post_counter++;
+            
+                        tbody.innerHTML += 
+                        "<tr id = tbody"+i+">"+
+                        "<td style='text-align:center'>"+post_counter+"</td>"+
+                        "<td style='text-align:center'>"+post_id+"</td>"+   // id
+                        "<td style='text-align:center'>"+data.data[i].created_time+"</td>"+   // created_time
+                        "<td style='text-align:center'>"+post_from+"</td>"+   // from
+                        "<td style='text-align:center'>"+post_tags+"</td>"+   // tags
+                        "<td style='text-align:center'>"+post_place+"</td>"+   // place
+                        "<td style='text-align:center'>"+post_longitude+"</td>"+   // longitude
+                        "<td style='text-align:center'>"+post_latitude+"</td>"+   // latitude
+                        "</tr>";
+
+                        last_tags_length = post_tags_length;
+
+                    
+                    } // end for
+
+                    */
+
+                    //paging(next_page);
+                } // end if(response && !response.error) 
+
+        function query(post_id){
+
+            console.log("in query()-----------------post_id:"+post_id);
+
+            var Noce = Parse.Object.extend("Node");
+            var query = new Parse.Query(Node);
+            query.equalTo("post_id", post_id);
+            query.find({
+                success: function(results) {
+                    console.log("Successfully retrieved " + results.length + " results.");
+                    console.log(results);
+
+                    // Do something with the returned Parse.Object values
+                    for (var i = 0; i < results.length; i++) { 
+                        var object = results[i];
+                        console.log(object.id + ' - ' + object.get('objectId'));
+                    }
+                    return 1;
+                },
+                error: function(error) {
+                    console("Error: " + error.code + " " + error.message);
+                    return 0;
+                }
+            });
+
+        }  // end function query
+
+        function addIntoDB(data){
+
+            console.log("in addIntoDB()");
+            console.log(data);
+            //console.log("created_time:"+created_time);
+
+            var found = query(data.id);
+            console.log("found:"+found);
+            if(found == 0){
+                var user = Parse.User.current();
+                var Node = Parse.Object.extend("Node");
+                var node = new Node();
+
+                node.set("user_id",user);
+                node.set("post_id",data.id);
+                node.set("from",data.from.name);
+                node.set("place_name",data.place.name);
+                node.set("longitude",data.place.location.longitude);
+                node.set("latitude",data.place.location.latitude);
+                node.set("pic_url",data.source);
+
+                data.updated_time = new Date(data.updated_time).toLocaleString();
+                node.set("create_time",data.updated_time);
+
+                var post_tags = "";
+                if(data.tags != null){
+                    post_tags_length = data.tags.data.length;
+                    for(var j = 0; j < post_tags_length; j++){
+                        //console.log(j+"---------"+data.tags.data[j].name);
+                        if(j == 0){
+                            post_tags += data.tags.data[j].name;
+                        } else {
+                            post_tags += ", ";
+                            post_tags += data.tags.data[j].name;
+                        }
+                        //console.log("............post_tags:"+post_tags);
+                    }
+                }
+                node.set("tags",post_tags);
+
+                var post_message;
+                if(data.message != null){
+                    post_message = data.message;
+                } else if(data.name != null){
+                    post_message = data.name;
+                }
+                node.set("message",post_message);
+
+                node.save(null, {
+                    success: function(node) {
+                        console.log('New object created with objectId: ' + node.id);
+                    },
+                    error: function(node, error) {
+                        // Execute any logic that should take place if the save fails.
+                        // error is a Parse.Error with an error code and message.
+                        alert('Failed to create new object, with error code: ' + error.message);
+                    }
+                });
+
+
+            } else {
+                console.log("data has already existed.");
+            }   // end if
+
+        };  // end function addIntoDB
+
+        function paging(next_page){
+            FB.api(next_page, function (response) {
+                console.log('next data:');
+                console.log(response);
+
+                if(response && !response.error) {      
+                    var data = response;
+
+                    console.log('data.data.length: '+data.data.length);
+                    console.log('in fbget_locations and the data is');
+                    console.log(data);
+                    //console.dir(response);
+
+                    //console.log('馬辣place有問題: ');
+                    //console.log(data.data[15].place); 
+
+
+                    ++N;
+                    console.log('N='+N);
+
+                    console.log('paging:');
+                    console.log(data.paging.next);
+                    var next_page = data.paging.next;
+
+                    var tbody = document.getElementById("tbody");
+                    tbody.innerHTML = "";
+
+                    for(var i = 0;i < data.data.length;i++){
+                            //pagemessage.innerHTML = "<center><h2>"+"<a href = \"http://www.facebook.com/"+userid+"\" target=_blank>"+data.data[i].from.name+"</a>"+"</h2></center>";
+
+                        data.data[i].created_time = new Date(data.data[i].created_time).toLocaleString();
+                        var post_id = data.data[i].id;
+                        var post_from = data.data[i].from.name;
+
+                        var post_tags = [];
+                        var post_tags_length;
+                        if(data.data[i].tags != null){
+                            post_tags_length = data.data[i].tags.data.length;
+                            for(var j = 0; j < post_tags_length; j++){
+                                post_tags.push(data.data[i].tags.data[j].name);
+                            }
+                        }
+
+                        if(data.data[i].place != null){
+                            var post_place = data.data[i].place.name;
+                            var post_longitude = data.data[i].place.location.longitude;
+                            var post_latitude = data.data[i].place.location.latitude;
+                        } else {
+                            continue;
+                        }
+
+                        post_counter++;
+        
+                        tbody.innerHTML += 
+                        "<tr id = tbody"+i+">"+
+                        "<td style='text-align:center'>"+post_counter+"</td>"+
+                        "<td style='text-align:center'>"+post_id+"</td>"+   // id
+                        "<td style='text-align:center'>"+data.data[i].created_time+"</td>"+   // created_time
+                        "<td style='text-align:center'>"+post_from+"</td>"+   // from
+                        "<td style='text-align:center'>"+post_tags+"</td>"+   // tags
+                        "<td style='text-align:center'>"+post_place+"</td>"+   // place
+                        "<td style='text-align:center'>"+post_longitude+"</td>"+   // longitude
+                        "<td style='text-align:center'>"+post_latitude+"</td>"+   // latitude
+                        "</tr>";
+
+                    } // end for
+                    paging(next_page);
+                } // end if(response && !response.error)
+            }); // end FB.api functuon
+
+        }; // end function paging
+
+    }); // end FB.api function
+            
+            /*
+            if(post_counter>0){
+                    ++N;
+                    console.log('N='+N);
+                    console.log('counter:'+post_counter);
+            console.log('***   next_page:');
+            console.log(next_page);
+            FB.api(next_page,
+            function (response) {
+                console.log('next data:');
+                console.log(response);
+
+                if(response && !response.error) {      
+                    var data = response;
+
+                    console.log('data.data.length: '+data.data.length);
+                    console.log('in fbget_locations and the data is');
+                    console.log(data);
+                    //console.dir(response);
+
+                    //console.log('馬辣place有問題: ');
+                    //console.log(data.data[15].place); 
+
+
+                    ++N;
+                    console.log('N='+N);
+
+                    console.log('paging:');
+                    console.log(data.paging.next);
+
+                    var tbody = document.getElementById("tbody");
+                    tbody.innerHTML = "";
+
+                    for(var i = 0;i < data.data.length;i++){
+                            //pagemessage.innerHTML = "<center><h2>"+"<a href = \"http://www.facebook.com/"+userid+"\" target=_blank>"+data.data[i].from.name+"</a>"+"</h2></center>";
+
+                        data.data[i].created_time = new Date(data.data[i].created_time).toLocaleString();
+                        var post_id = data.data[i].id;
+                        var post_from = data.data[i].from.name;
+
+                        var post_tags = [];
+                        var post_tags_length;
+                        if(data.data[i].tags != null){
+                            post_tags_length = data.data[i].tags.data.length;
+                            for(var j = 0; j < post_tags_length; j++){
+                                post_tags.push(data.data[i].tags.data[j].name);
+                            }
+                        }
+
+                        if(data.data[i].place != null){
+                            var post_place = data.data[i].place.name;
+                            var post_longitude = data.data[i].place.location.longitude;
+                            var post_latitude = data.data[i].place.location.latitude;
+                        } else {
+                            continue;
+                        }
+
+                        post_counter++;
+        
+                        tbody.innerHTML += 
+                        "<tr id = tbody"+i+">"+
+                        "<td style='text-align:center'>"+post_counter+"</td>"+
+                        "<td style='text-align:center'>"+post_id+"</td>"+   // id
+                        "<td style='text-align:center'>"+data.data[i].created_time+"</td>"+   // created_time
+                        "<td style='text-align:center'>"+post_from+"</td>"+   // from
+                        "<td style='text-align:center'>"+post_tags+"</td>"+   // tags
+                        "<td style='text-align:center'>"+post_place+"</td>"+   // place
+                        "<td style='text-align:center'>"+post_longitude+"</td>"+   // longitude
+                        "<td style='text-align:center'>"+post_latitude+"</td>"+   // latitude
+                        "</tr>";
+
+                    } // end for
+                } // end if(response && !response.error)
+            }); // end FB.api functuon
+            }
+            */
+        }; // end of function fbget
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script type="text/javascript" language="javascript">
+
+    function fbgetMap(userid, token) {
+
+        var post_counter = 0;
+        FB.api("/"+userid+"/locations"+"?fields=from,tags,place,created_time&limit=250",
+        function (response) {
+    
+            if(response && !response.error) {      
+                var data = response;
+
+                console.log('data.data.length: '+data.data.length);
+                console.log('in fbgetMap and the data is');
+                console.log(data);
+                //console.dir(response);
+
+                initialize();
+
+                for(var i = 0;i < data.data.length;i++){
+                    //console.log("i="+i);
+
+                    fbgetMore(data.data[i].id,data.data.length);
+                    function fbgetMore(post_id, length) {
+
+                        var post_counter = 0;
+                        FB.api("/"+post_id,
+                        function (response) {
+    
+                            if(response && !response.error) {
+                                //console.log("in fbgetMMM");      
+                                //console.log(response);
+
+                                addSite(map,response);
+                            }   // end if
+                        }); // end FB.api
+                    };  // end fbgetMap
+                    //initialize(data);
+                } // end for
+                //console.log('more_data');
+                //console.log(more_data);
+            }   // end if
+        }); // end FB.api
+    };  // end fbgetMap
+
+    function initialize() {
+
+        console.log("in initialize()");
+        //console.log(data);
+
+        map = new google.maps.Map(document.getElementById('maps-div'), {
+            zoom: 5,
+            center: new google.maps.LatLng(25.036772,121.520269), // 設定地圖中心點
+            mapTypeId: google.maps.MapTypeId.ROADMAP // HYBRID,ROADMAP,SATELLITE,TERRAIN  
+        });    
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    };  // end initialize
+
+
+    var prev_infowindow = null;
+    function addSite(map,data) {
+        console.log('in addSite()');
+
+        var post_place;
+        var post_longitude;
+        var post_latitude;
+
+        var post_time = new Date(data.created_time).toLocaleString();
+        var post_from = data.from.name;
+        var post_pic_url = data.source;
+        console.log("post_pic_url:");
+        console.log(post_pic_url);
+
+        var post_message;
+        if(data.message != null){
+            post_message = data.message;
+        } else if(data.name != null){
+            post_message = data.name;
+        }
+
+        var post_tags = [];
+        var post_tags_length;
+        if(data.tags != null){
+            post_tags_length = data.tags.data.length;
+            for(var j = 0; j < post_tags_length; j++){
+                post_tags.push(data.tags.data[j].name);
+            }
+        }
+
+        if(data.place != null){
+            post_place = data.place.name;
+            post_longitude = data.place.location.longitude;
+            post_latitude = data.place.location.latitude;
+        } else {
+            //continue;
+        }   
+
+
+        var pt = new google.maps.LatLng(post_latitude,post_longitude);
+        var marker = new google.maps.Marker({
+            map: map,
+            position : pt,
+            title: post_place
+        });
+
+        if(post_pic_url != null){
+            if(post_message != null){
+                var contentString = 
+                    '<div id="content">'+
+                    '<div id="siteNotice">'+
+                    '</div>'+
+                    '<h3 id="firstHeading" class="firstHeading">'+post_place+'</h3>'+ // place name
+                    '<div id="bodyContent">'+
+                    '<h4><b>Date: </b>'+ post_time + '<br />' + // date
+                    '<b>From: </b> '+ post_from +'<br />' + // from
+                    '<b>Tags: </b> '+ post_tags +'<br /></h4>' + // tags
+                    '<p>' + post_message + '<br /></p>' + // message
+                    '<img src="'+ post_pic_url +'" style="width:50%;height:50%;">'+
+                    '</div>'+
+                    '</div>';
+                } else {
+                var contentString = 
+                    '<div id="content">'+
+                    '<div id="siteNotice">'+
+                    '</div>'+
+                    '<h3 id="firstHeading" class="firstHeading">'+post_place+'</h3>'+ // place name
+                    '<div id="bodyContent">'+
+                    '<h4><b>Date: </b>'+ post_time + '<br />' + // date
+                    '<b>From: </b> '+ post_from +'<br />' + // from
+                    '<b>Tags: </b> '+ post_tags +'<br /></h4>' + // tags
+                    '<img src="'+ post_pic_url +'>'+
+                    '</div>'+
+                    '</div>';
+                }
+            } else {
+            if(post_message != null){
+                var contentString = 
+                    '<div id="content">'+
+                    '<div id="siteNotice">'+
+                    '</div>'+
+                    '<h3 id="firstHeading" class="firstHeading">'+post_place+'</h3>'+ // place name
+                    '<div id="bodyContent">'+
+                    '<h4><b>Date: </b>'+ post_time + '<br />' + // date
+                    '<b>From: </b> '+ post_from +'<br />' + // from
+                    '<b>Tags: </b> '+ post_tags +'<br /></h4>' + // tags
+                    '<p>' + post_message + '<br /></p>' + // message
+                    '</div>'+
+                    '</div>';
+                } else {
+                var contentString = 
+                    '<div id="content">'+
+                    '<div id="siteNotice">'+
+                    '</div>'+
+                    '<h3 id="firstHeading" class="firstHeading">'+post_place+'</h3>'+ // place name
+                    '<div id="bodyContent">'+
+                    '<h4><b>Date: </b>'+ post_time + '<br />' + // date
+                    '<b>From: </b> '+ post_from +'<br />' + // from
+                    '<b>Tags: </b> '+ post_tags +'<br /></h4>' + // tags
+                    '</div>'+
+                    '</div>';
+                }
+            }
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString,
+                    maxWidth: 300,
+                    maxHeight: 500
+                });
+ 
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    if (prev_infowindow != null) prev_infowindow.close();
+                    prev_infowindow = infowindow;
+                    infowindow.open(map, marker);
+                });            
+
+            };   // end addSite
+
+</script>
+</body>
+</html>
