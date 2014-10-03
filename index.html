@@ -630,14 +630,15 @@
                                 }
                                 node.set("tags",post_tags);
 
-                                var post_message;
-                                if(data.message != null){
-                                    post_message = data.message;
-                                } else if(data.name != null){
-                                    post_message = data.name;
-                                } else {
-                                    post_message = "";
+                                var post_message = data.message;
+                                if(data.message == "undefined"){
+                                    if(data.name == "undefined"){
+                                        post_message = "";
+                                    } else{
+                                        post_message = data.name;
+                                    }
                                 }
+
                                 node.set("message",post_message);
 
                                 node.save(null, {
