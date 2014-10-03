@@ -379,6 +379,7 @@
                 n=6;
                 console.log('n='+n);    // 按了logout後，n=6
             
+            /*
                 FB.logout(function(response){
                     FB.Event.subscribe('auth.logout', function(response) {
                         if (response.status!="connected" && response.authResponse){ // if logged out
@@ -398,6 +399,25 @@
                 });
 
                 //location.reload();  // refresh
+
+            */
+
+                FB.logout(function(response){
+                    var logoutControlDiv=document.getElementById("my-login-control");
+                    logoutControlDiv.style.display="block";
+                    var loginControlDiv=document.getElementById("my-logout-control");
+                    loginControlDiv.style.display="none";
+
+                    n=2;
+                    console.log('n='+n);
+
+                    console.log("Your logout response:");
+                    console.log(response);
+                    alert('You are logging out. Bye!');
+                });
+
+                location.reload();  // refresh
+
             });
 
             $("#from-locations-button").click(function(){
