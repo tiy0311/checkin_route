@@ -185,7 +185,27 @@
                     var logoutControlDiv=document.getElementById("my-logout-control");
                     logoutControlDiv.style.display="block";
 
-                    n=1;
+                    Parse.FacebookUtils.logIn("user_tagged_places,user_photos,user_status,user_friends,user_about_me,user_birthday,read_stream", {
+
+                        success: function(user) {
+                            if (!user.existed()) {
+                                alert("User signed up and logged in through Facebook!");
+                            } else {
+                                alert("User logged in through Facebook!");
+                            }
+                            FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                n=1;
+                                console.log('n='+n);
+                                console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                            });
+                        },
+                        error: function(user, error) {
+                            alert("User cancelled the Facebook login or did not fully authorize.");
+                        }
+                    }); // end parse.fb.login
+
+
+                    n=2;
                     console.log('n='+n);
 
                     // when user has been logged in, this block will be triggered.
@@ -219,21 +239,16 @@
                         success: function(user) {
                             if (!user.existed()) {
                                 alert("User signed up and logged in through Facebook!");
-                                FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                    n=4;
-                                    console.log('n='+n);
-                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
-                                });
-                                window.location.reload();
                             } else {
                                 alert("User logged in through Facebook!");
-                                    FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                    n=4;
-                                    console.log('n='+n);
-                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
-                                });
-                                window.location.reload();
                             }
+
+                            FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                n=3;
+                                console.log('n='+n);
+                                console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                            });
+                            window.location.reload();
                         },
                         error: function(user, error) {
                             alert("User cancelled the Facebook login or did not fully authorize.");
@@ -247,21 +262,16 @@
                         success: function(user) {
                             if (!user.existed()) {
                                 alert("User signed up and logged in through Facebook!");
-                                FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                    n=4;
-                                    console.log('n='+n);
-                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
-                                });
-                                window.location.reload();
                             } else {
                                 alert("User logged in through Facebook!");
-                                    FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                    n=4;
-                                    console.log('n='+n);
-                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
-                                });
-                                window.location.reload();
                             }
+                            
+                            FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                n=4;
+                                console.log('n='+n);
+                                console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                            });
+                            window.location.reload();
                         },
                         error: function(user, error) {
                             alert("User cancelled the Facebook login or did not fully authorize.");
@@ -288,7 +298,7 @@
                         var logoutControlDiv=document.getElementById("my-logout-control");
                         logoutControlDiv.style.display="block";
 
-                        n=1;
+                        n=5;
                         console.log('n='+n);
 
                         // when user has been logged in, this block will be triggered.
@@ -321,21 +331,16 @@
                             success: function(user) {
                                 if (!user.existed()) {
                                     alert("User signed up and logged in through Facebook!");
-                                    FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                        n=4;
-                                        console.log('n='+n);
-                                        console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
-                                    });
-                                    window.location.reload();
                                 } else {
                                     alert("User logged in through Facebook!");
-                                        FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                        n=4;
-                                        console.log('n='+n);
-                                        console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
-                                    });
-                                    window.location.reload();
                                 }
+                            
+                                FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                    n=6;
+                                    console.log('n='+n);
+                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                });
+                                window.location.reload();
                             },
                             error: function(user, error) {
                                 alert("User cancelled the Facebook login or did not fully authorize.");
@@ -349,21 +354,16 @@
                             success: function(user) {
                                 if (!user.existed()) {
                                     alert("User signed up and logged in through Facebook!");
-                                    FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                        n=4;
-                                        console.log('n='+n);
-                                        console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
-                                    });
-                                    window.location.reload();
                                 } else {
                                     alert("User logged in through Facebook!");
-                                        FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                        n=4;
-                                        console.log('n='+n);
-                                        console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
-                                    });
-                                    window.location.reload();
                                 }
+                            
+                                FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
+                                    n=7;
+                                    console.log('n='+n);
+                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                });
+                                window.location.reload();
                             },
                             error: function(user, error) {
                                 alert("User cancelled the Facebook login or did not fully authorize.");
@@ -376,31 +376,8 @@
             });     // end login btn click
 
             $("#my-logout-button").click(function(){
-                n=6;
+                n=0;
                 console.log('n='+n);    // 按了logout後，n=6
-            
-            /*
-                FB.logout(function(response){
-                    FB.Event.subscribe('auth.logout', function(response) {
-                        if (response.status!="connected" && response.authResponse){ // if logged out
-                            var logoutControlDiv=document.getElementById("my-login-control");
-                            logoutControlDiv.style.display="block";
-                            var loginControlDiv=document.getElementById("my-logout-control");
-                            loginControlDiv.style.display="none";
-
-                            n=2;
-                            console.log('n='+n);
-
-                            console.log("Your logout response:");
-                            console.log(response);
-                        }
-                        alert('You are logging out. Bye!');
-                    });
-                });
-
-                //location.reload();  // refresh
-
-            */
 
                 FB.logout(function(response){
                     var logoutControlDiv=document.getElementById("my-login-control");
@@ -408,7 +385,7 @@
                     var loginControlDiv=document.getElementById("my-logout-control");
                     loginControlDiv.style.display="none";
 
-                    n=2;
+                    n=0.5;
                     console.log('n='+n);
 
                     console.log("Your logout response:");
@@ -631,12 +608,8 @@
                                 node.set("tags",post_tags);
 
                                 var post_message = data.message;
-                                if(data.message == "undefined"){
-                                    if(data.name == "undefined"){
-                                        post_message = "";
-                                    } else{
-                                        post_message = data.name;
-                                    }
+                                if(post_message == undefined){
+                                    post_message = data.name;
                                 }
 
                                 node.set("message",post_message);
@@ -710,56 +683,8 @@
                 
                             }   // end for
 
-
-
-                    /*
-
-                    var tbody = document.getElementById("tbody");
-                    tbody.innerHTML = "";
-
-                    for(var i = 0;i < data.data.length;i++){
-                            //pagemessage.innerHTML = "<center><h2>"+"<a href = \"http://www.facebook.com/"+userid+"\" target=_blank>"+data.data[i].from.name+"</a>"+"</h2></center>";
-
-                        data.data[i].created_time = new Date(data.data[i].created_time).toLocaleString();
-                        var post_id = data.data[i].id;
-                        var post_from = data.data[i].from.name;
-
-                        var post_tags = [];
-                        var post_tags_length;
-                        if(data.data[i].tags != null){
-                            post_tags_length = data.data[i].tags.data.length;
-                            for(var j = 0; j < post_tags_length; j++){
-                                post_tags.push(data.data[i].tags.data[j].name);
-                            }
-                        }
-
-                        if(data.data[i].place != null){
-                            var post_place = data.data[i].place.name;
-                            var post_longitude = data.data[i].place.location.longitude;
-                            var post_latitude = data.data[i].place.location.latitude;
-                        } else {
-                            continue;
-                        }
-
-                        post_counter++;
-        
-                        tbody.innerHTML += 
-                        "<tr id = tbody"+i+">"+
-                        "<td style='text-align:center'>"+post_counter+"</td>"+
-                        "<td style='text-align:center'>"+post_id+"</td>"+   // id
-                        "<td style='text-align:center'>"+data.data[i].created_time+"</td>"+   // created_time
-                        "<td style='text-align:center'>"+post_from+"</td>"+   // from
-                        "<td style='text-align:center'>"+post_tags+"</td>"+   // tags
-                        "<td style='text-align:center'>"+post_place+"</td>"+   // place
-                        "<td style='text-align:center'>"+post_longitude+"</td>"+   // longitude
-                        "<td style='text-align:center'>"+post_latitude+"</td>"+   // latitude
-                        "</tr>";
-
-                    } // end for
-
-                    */
-
                             paging(next_page);
+
                         } // end if(response && !response.error)
                     }); // end FB.api(next_page) functuon
                 }; // end function paging
