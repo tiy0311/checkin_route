@@ -11,6 +11,17 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <script src="//www.parsecdn.com/js/parse-1.3.0.min.js"></script>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
+    <script src="sorttable.js"></script>
+    <style type="text/css">
+        /* Sortable tables */
+        table.sortable thead {
+            background-color:#eee;
+            color:#666666;
+            font-weight: bold;
+            cursor: default;
+        }
+    </style>
     <!-- ENDBLOCK: Loading libraries -->
 
 </head>
@@ -97,7 +108,7 @@
 
         <!--table-->
         <div id="location-div" style="display:none">
-            <table class="table table-hover table-bordered" style="margin-top:8em">
+            <table class="table table-hover table-bordered sortable" style="margin-top:8em">
                 <thead id="thead">
                     <tr>
                         <th width="2%" style="text-align:center">#</th>
@@ -580,15 +591,11 @@
                                 console.log("created_time:"+data.created_time);
                                 console.log("updated_time:"+data.updated_time);
 
-                                // if there's no created_time, use updated_time
-                                data.created_time = new Date(data.created_time).toLocaleString();
-                                if(data.created_time != "Invalid Date"){
-                                    node.set("create_time",data.created_time);
-                                    //console.log("................................................use created_time.");
+
+                                if(data.created_time != undefined){
+                                    node.set("created_time",data.created_time);
                                 } else {
-                                    data.updated_time = new Date(data.updated_time).toLocaleString();
-                                    node.set("create_time",data.updated_time);
-                                    //console.log(".....................................created_time is undefined so use updated_time.");  
+                                    node.set("created_time",data.updated_time);
                                 }
 
                                 var post_tags = "";
@@ -719,13 +726,15 @@
                                 //console.log("successful!!!  query_every_node:::");
                                 //console.log(node);
 
+                                var created_time = new Date(node.attributes.created_time).toLocaleString();
+
                                 ++post_counter;
         
                                 tbody.innerHTML += 
                                 "<tr id = tbody"+i+">"+
                                 "<td style='text-align:center'>"+post_counter+"</td>"+
                                 "<td style='text-align:center'>"+node.attributes.post_id+"</td>"+   // id
-                                "<td style='text-align:center'>"+node.attributes.create_time+"</td>"+   // created_time
+                                "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
                                 "<td style='text-align:center'>"+node.attributes.from+"</td>"+   // from
                                 "<td style='text-align:center'>"+node.attributes.tags+"</td>"+   // tags
                                 "<td style='text-align:center'>"+node.attributes.place_name+"</td>"+   // place
