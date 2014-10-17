@@ -13,6 +13,15 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 
     <script src="sorttable.js"></script>
+
+    <!--google font links-->
+    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'> <!--Check-in Route-->
+    <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>             <!--button-->
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>   <!--table-->
+    <link href='http://fonts.googleapis.com/css?family=Vollkorn:700' rel='stylesheet' type='text/css'>  <!--Map's Place Name-->
+    <link href='http://fonts.googleapis.com/css?family=Russo+One' rel='stylesheet' type='text/css'>     <!--Map's Titles, like Data,From,Tags-->
+    <link rel="stylesheet" type="text/css" href="style.css">
     <style type="text/css">
         /* Sortable tables */
         table.sortable thead {
@@ -35,52 +44,54 @@
     <!-- Button for login to Facebook -->
     <div id="my-html-playground" class="container">
         <nav class="navbar navbar-default" role="navigation">
-            <a id="brand" class="navbar-brand" href="#">
-                <span class="glyphicon glyphicon-map-marker"></span>
-                Check-in Route
-            </a>
-            <div id="my-login-control" style="display:bolck">
-                <button id="my-login-button" type="button" class="btn btn-default navbar-btn">
+            <div id="brand" style="margin-left:10px">
+                <a class="navbar-brand" href="#" style="font-size:26px">
+                    <span class="glyphicon glyphicon-map-marker"></span>
+                    Check-in Route.
+                </a>
+            </div>
+            <div id="my-login-control" style="display:bolck; float:right">
+                <button id="my-login-button" type="button" class="btn btn-default navbar-btn" style="margin-right:20px">
                     <span class="glyphicon glyphicon-hand-right"></span>
                     &nbsp;&nbsp;Login with Facebook&nbsp;
                 </button>
-                <p class="navbar-text" id="my-logout-message">&nbsp;&nbsp;</p>
+                <p class="navbar-text" id="my-logout-message" style="font-size:17px">&nbsp;&nbsp;</p>
             </div>
-            <div id="my-logout-control" style="display:none">
-                <button id="my-logout-button" type="button" class="btn btn-default navbar-btn">
+            <div id="my-logout-control" style="display:none; float:right">
+                <button id="my-logout-button" type="button" class="btn btn-default navbar-btn" style="margin-right:20px">
                     <span class="glyphicon glyphicon-off"></span>
                     &nbsp;&nbsp;Logout&nbsp;
                 </button>
-                <p class="navbar-text" id="my-login-message">&nbsp;&nbsp;</p>
+                <p class="navbar-text" id="my-login-message" style="font-size:17px">&nbsp;&nbsp;</p>
             </div>
         </nav>
 
         <!-- Profile Area -->
-        <div id="my-profile" class="row" style="display:none;margin-bottom:50px">
+        <div id="my-profile" class="row" style="display:none;margin-bottom:50px;margin-left:40px">
             <div class="col-md-3">
                 <!-- Profile Picture -->
                 <img id="my-profile-picture" class="img-thumbnail" src="" alt="">
             </div>
-            <div class="col-md-9">
+            <div class="col-md-9" style="font-size:16px">
                 <!-- Profile Information -->
                 <dl class="dl-horizontal">
-                    <dt>Name</dt>
+                    <dt><b>Name</b></dt>
                     <dd id="my-profile-name"></dd>
                 </dl>
                 <dl class="dl-horizontal">
-                    <dt>Username</dt>
+                    <dt><b>Username</b></dt>
                     <dd id="my-profile-username"></dd>
                 </dl>
                 <dl class="dl-horizontal">
-                    <dt>Gender</dt>
+                    <dt><b>Gender</b></dt>
                     <dd id="my-profile-gender"></dd>
                 </dl>
                 <dl class="dl-horizontal">
-                    <dt>Birthday</dt>
+                    <dt><b>Birthday</b></dt>
                     <dd id="my-profile-birthday"></dd>
                 </dl>
                 <dl class="dl-horizontal">
-                    <dt>Facebook ID</dt>
+                    <dt><b>Facebook ID</b></dt>
                     <dd id="my-profile-facebook-id"></dd>
                 </dl>
             </div>
@@ -110,16 +121,16 @@
         <div id="location-div" style="display:none">
             <table class="table table-hover table-bordered sortable" style="margin-top:8em">
                 <thead id="thead">
-                    <tr>
-                        <th width="2%" style="text-align:center">#</th>
-                        <th width="12%" style="text-align:center">Id</th>
-                        <th width="18%" style="text-align:center">Create time (GMT +0800)</th>
-                        <th width="5%" style="text-align:center">From</th>
-                        <th width="10%" style="text-align:center">Tags</th>
+                    <tr><b>
+                        <th width="3%" style="text-align:center">#</th>
+                        <th width="13%" style="text-align:center">Id</th>
+                        <th width="17%" style="text-align:center">Create time (GMT +0800)</th>
+                        <th width="8%" style="text-align:center">From</th>
+                        <th width="15%" style="text-align:center">Tags</th>
                         <th width="20%" style="text-align:center">Place</th>
-                        <th width="11%" style="text-align:center">Longitude</th>
-                        <th width="11%" style="text-align:center">Latitude</th>         
-                    </tr>
+                        <th width="12%" style="text-align:center">Longitude</th>
+                        <th width="12%" style="text-align:center">Latitude</th>         
+                    </b></tr>
                 </thead>
                 <tbody id="tbody">
                 <!--
@@ -411,8 +422,15 @@
             $("#from-locations-button").click(function(){
                 console.log('Now you click the fetch button.....');
 
+                var MyProfileDiv=document.getElementById("my-profile");
+                MyProfileDiv.style.display="block";
+
                 var LoadingDiv = document.getElementById("loading-div");
                 LoadingDiv.style.display="block";
+                var LocationDiv=document.getElementById("location-div");
+                LocationDiv.style.display="none";
+                var MapsDiv=document.getElementById("maps-div");
+                MapsDiv.style.display="none";
 
                 setCookie("ACCESS_TOKEN", ACCESS_TOKEN);    
 
@@ -427,12 +445,21 @@
                 var LocationDiv=document.getElementById("location-div");
                 LocationDiv.style.display="block";
 
+                var MapsDiv=document.getElementById("maps-div");
+                MapsDiv.style.display="none";
+
+                $("tbody").empty();
+
                 demo_table();
 
             });
 
             $("#maps").click(function(){
                 console.log('Now you click the Visualization button.....');
+
+                var MyProfileDiv=document.getElementById("my-profile");
+                MyProfileDiv.style.display="none";
+
                 var LocationDiv=document.getElementById("location-div");
                 LocationDiv.style.display="none";
                 console.log("location-div:none");
@@ -444,7 +471,7 @@
                 console.log('userid: '+userid);             // correct
                 console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
                 //fbget(userid, ACCESS_TOKEN);
-                fbgetMap(userid, ACCESS_TOKEN);
+                demo_map(userid, ACCESS_TOKEN);
             });
 
             function setCookie(cname,cvalue)
@@ -794,47 +821,48 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 <script type="text/javascript" language="javascript">
 
-    function fbgetMap(userid, token) {
+    function demo_map(userid, token) {
 
-        var post_counter = 0;
-        FB.api("/"+userid+"/locations"+"?fields=from,tags,place,created_time&limit=250",
-        function (response) {
-    
-            if(response && !response.error) {      
-                var data = response;
+        var user = Parse.User.current();
 
-                console.log('data.data.length: '+data.data.length);
-                console.log('in fbgetMap and the data is');
-                console.log(data);
-                //console.dir(response);
+        var Node = Parse.Object.extend("Node");
+        var query = new Parse.Query(Node).limit(1000);
+        query.equalTo("user_id", user);
+        query.find({
+                success: function(results) {
+                    console.log("Successfully retrieved " + results.length + " scores.");
+                    console.log(results);
 
-                initialize();
+                    initialize();
 
-                for(var i = 0;i < data.data.length;i++){
-                    //console.log("i="+i);
-
-                    fbgetMore(data.data[i].id,data.data.length);
-                    function fbgetMore(post_id, length) {
+                    for (var i = 0; i < results.length; i++) { 
 
                         var post_counter = 0;
-                        FB.api("/"+post_id,
-                        function (response) {
-    
-                            if(response && !response.error) {
-                                //console.log("in fbgetMMM");      
-                                //console.log(response);
 
-                                addSite(map,response);
-                            }   // end if
-                        }); // end FB.api
-                    };  // end fbgetMap
-                    //initialize(data);
-                } // end for
-                //console.log('more_data');
-                //console.log(more_data);
-            }   // end if
-        }); // end FB.api
-    };  // end fbgetMap
+                        var objectId = results[i].id;
+
+                        var query_every_node = new Parse.Query(Node);
+                        query_every_node.get(objectId, {
+                            success: function(node) {
+                                //console.log("successful!!!  query_every_node:::");
+                                //console.log(node);
+
+                                addSite(map,node);
+
+                            },
+                            error: function(object, error) {
+                                console.log("error");
+                            }
+                        });
+                    
+                    }   // end for
+                },
+                error: function(error) {
+                    console.log("Error: " + error.code + " " + error.message);
+                }
+            });
+
+    };  // end demo_map
 
     function initialize() {
 
@@ -842,8 +870,8 @@
         //console.log(data);
 
         map = new google.maps.Map(document.getElementById('maps-div'), {
-            zoom: 5,
-            center: new google.maps.LatLng(25.036772,121.520269), // 設定地圖中心點
+            zoom: 7,
+            center: new google.maps.LatLng(23.686772,121.520269), // 設定地圖中心點
             mapTypeId: google.maps.MapTypeId.ROADMAP // HYBRID,ROADMAP,SATELLITE,TERRAIN  
         });    
 
@@ -852,42 +880,22 @@
 
 
     var prev_infowindow = null;
-    function addSite(map,data) {
+    function addSite(map,node) {
         console.log('in addSite()');
 
-        var post_place;
-        var post_longitude;
-        var post_latitude;
+        var post_time = new Date(node.attributes.created_time).toLocaleString();
 
-        var post_time = new Date(data.created_time).toLocaleString();
-        var post_from = data.from.name;
-        var post_pic_url = data.source;
-        console.log("post_pic_url:");
-        console.log(post_pic_url);
+        var post_tags = node.attributes.tags;
+        var post_from = node.attributes.from;
 
-        var post_message;
-        if(data.message != null){
-            post_message = data.message;
-        } else if(data.name != null){
-            post_message = data.name;
-        }
+        var post_place = node.attributes.place_name;
+        var post_longitude = node.attributes.longitude;
+        var post_latitude = node.attributes.latitude;
 
-        var post_tags = [];
-        var post_tags_length;
-        if(data.tags != null){
-            post_tags_length = data.tags.data.length;
-            for(var j = 0; j < post_tags_length; j++){
-                post_tags.push(data.tags.data[j].name);
-            }
-        }
-
-        if(data.place != null){
-            post_place = data.place.name;
-            post_longitude = data.place.location.longitude;
-            post_latitude = data.place.location.latitude;
-        } else {
-            //continue;
-        }   
+        var post_message = node.attributes.message;
+        var post_pic_url = node.attributes.pic_url;
+        //console.log("post_pic_url:");
+        //console.log(post_pic_url);
 
 
         var pt = new google.maps.LatLng(post_latitude,post_longitude);
@@ -897,78 +905,62 @@
             title: post_place
         });
 
-        if(post_pic_url != null){
-            if(post_message != null){
-                var contentString = 
-                    '<div id="content">'+
-                    '<div id="siteNotice">'+
-                    '</div>'+
-                    '<h3 id="firstHeading" class="firstHeading">'+post_place+'</h3>'+ // place name
-                    '<div id="bodyContent">'+
-                    '<h4><b>Date: </b>'+ post_time + '<br />' + // date
-                    '<b>From: </b> '+ post_from +'<br />' + // from
-                    '<b>Tags: </b> '+ post_tags +'<br /></h4>' + // tags
-                    '<p>' + post_message + '<br /></p>' + // message
-                    '<img src="'+ post_pic_url +'" style="width:50%;height:50%;">'+
-                    '</div>'+
-                    '</div>';
-                } else {
-                var contentString = 
-                    '<div id="content">'+
-                    '<div id="siteNotice">'+
-                    '</div>'+
-                    '<h3 id="firstHeading" class="firstHeading">'+post_place+'</h3>'+ // place name
-                    '<div id="bodyContent">'+
-                    '<h4><b>Date: </b>'+ post_time + '<br />' + // date
-                    '<b>From: </b> '+ post_from +'<br />' + // from
-                    '<b>Tags: </b> '+ post_tags +'<br /></h4>' + // tags
-                    '<img src="'+ post_pic_url +'>'+
-                    '</div>'+
-                    '</div>';
-                }
-            } else {
-            if(post_message != null){
-                var contentString = 
-                    '<div id="content">'+
-                    '<div id="siteNotice">'+
-                    '</div>'+
-                    '<h3 id="firstHeading" class="firstHeading">'+post_place+'</h3>'+ // place name
-                    '<div id="bodyContent">'+
-                    '<h4><b>Date: </b>'+ post_time + '<br />' + // date
-                    '<b>From: </b> '+ post_from +'<br />' + // from
-                    '<b>Tags: </b> '+ post_tags +'<br /></h4>' + // tags
-                    '<p>' + post_message + '<br /></p>' + // message
-                    '</div>'+
-                    '</div>';
-                } else {
-                var contentString = 
-                    '<div id="content">'+
-                    '<div id="siteNotice">'+
-                    '</div>'+
-                    '<h3 id="firstHeading" class="firstHeading">'+post_place+'</h3>'+ // place name
-                    '<div id="bodyContent">'+
-                    '<h4><b>Date: </b>'+ post_time + '<br />' + // date
-                    '<b>From: </b> '+ post_from +'<br />' + // from
-                    '<b>Tags: </b> '+ post_tags +'<br /></h4>' + // tags
-                    '</div>'+
-                    '</div>';
-                }
-            }
 
-                var infowindow = new google.maps.InfoWindow({
-                    content: contentString,
-                    maxWidth: 300,
-                    maxHeight: 500
-                });
+        if(post_message == undefined){
+            post_message = "";
+        }
+
+        if(post_pic_url == undefined){
+             var contentString = 
+                '<div id="content">'+
+                '<div id="siteNotice">'+
+                '</div>'+
+                '<h2 id="firstHeading" class="firstHeading"><b>'+post_place+'</b></h2>'+   // place name
+                '<div id="bodyContent">'+
+
+                '<h4><b id="title">Date - </b>'+ post_time + '<br />' + // date
+                '<b id="title">From- </b> '+ post_from +'<br />' + // from
+                '<b id="title">Tags - </b> '+ post_tags +'<br /></h4>' + // tags
+
+                '<h4>' + post_message + '<br /></h4>' + // message
+
+                '</div>'+
+                '</div>';
+        } else {
+            var contentString = 
+                '<div id="content">'+
+                '<div id="siteNotice">'+
+                '</div>'+
+                '<h2 id="firstHeading" class="firstHeading"><b>'+post_place+'</b></h2>'+   // place name
+                '<img src="'+ post_pic_url +'" style="width:50%;height:50%;">'+     // photo
+                '<div id="bodyContent">'+
+
+                '<h4><b id="title">Date - </b>'+ post_time + '<br />' + // date
+                '<b id="title">From- </b> '+ post_from +'<br />' + // from
+                '<b id="title">Tags - </b> '+ post_tags +'<br /></h4>' + // tags
+
+                '<h4>' + post_message + '<br /></h4>' + // message
+
+                '</div>'+
+                '</div>';
+
+        }   // end if
+
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString,
+            maxWidth: 300,
+            maxHeight: 250
+        });
  
 
-                google.maps.event.addListener(marker, 'click', function() {
-                    if (prev_infowindow != null) prev_infowindow.close();
-                    prev_infowindow = infowindow;
-                    infowindow.open(map, marker);
-                });            
+        google.maps.event.addListener(marker, 'click', function() {
+            if (prev_infowindow != null) prev_infowindow.close();
+            prev_infowindow = infowindow;
+            infowindow.open(map, marker);
+        });            
 
-            };   // end addSite
+        };   // end addSite
 
 </script>
 </body>
