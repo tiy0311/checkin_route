@@ -17,7 +17,8 @@
     <!--google font links-->
     <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'> <!--Check-in Route-->
-    <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>             <!--button-->
+    <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>      <!--button-->
+    <link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'> <!--hand-writing font-->
     <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>   <!--table-->
     <link href='http://fonts.googleapis.com/css?family=Vollkorn:700' rel='stylesheet' type='text/css'>  <!--Map's Place Name-->
     <link href='http://fonts.googleapis.com/css?family=Russo+One' rel='stylesheet' type='text/css'>     <!--Map's Titles, like Data,From,Tags-->
@@ -53,21 +54,53 @@
             <div id="my-login-control" style="display:bolck; float:right">
                 <button id="my-login-button" type="button" class="btn btn-default navbar-btn" style="margin-right:20px">
                     <span class="glyphicon glyphicon-hand-right"></span>
-                    &nbsp;&nbsp;Login with Facebook&nbsp;
+                    &nbsp;Login with Facebook&nbsp;
                 </button>
                 <p class="navbar-text" id="my-logout-message" style="font-size:17px">&nbsp;&nbsp;</p>
             </div>
-            <div id="my-logout-control" style="display:none; float:right">
+            <!--div id="my-logout-control" style="display:none; float:right">
                 <button id="my-logout-button" type="button" class="btn btn-default navbar-btn" style="margin-right:20px">
                     <span class="glyphicon glyphicon-off"></span>
-                    &nbsp;&nbsp;Logout&nbsp;
+                    &nbsp;Logout&nbsp;
                 </button>
                 <p class="navbar-text" id="my-login-message" style="font-size:17px">&nbsp;&nbsp;</p>
+            </div-->
+
+            <div id="my-logout-control" style="display:none">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display:none">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="from-locations-button">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                    &nbsp;&nbsp;Fetch Locations&nbsp;
+                                </a></li>
+                                <li><a href="#" id="demonstrate-as-table-button">
+                                    <span class="glyphicon glyphicon-list"></span>
+                                    &nbsp;&nbsp;Demonstrate as Table Format&nbsp;
+                                </a></li>
+                                <li><a href="#" id="maps">
+                                    <span class="glyphicon glyphicon-globe"></span>
+                                    &nbsp;&nbsp;Visualization - Google Map&nbsp;
+                                </a></li>
+
+                                <li class="divider"></li>
+
+                                <li><a href="#" id="my-logout-button">
+                                    <span class="glyphicon glyphicon-off"></span>
+                                    &nbsp;&nbsp;Logout&nbsp;
+                                </a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
         </nav>
 
         <!-- Profile Area -->
-        <div id="my-profile" class="row" style="display:none;margin-bottom:50px;margin-left:40px">
+        <div id="my-profile" class="row" style="display:none;margin-bottom:20px;margin-left:40px">
             <div class="col-md-3">
                 <!-- Profile Picture -->
                 <img id="my-profile-picture" class="img-thumbnail" src="" alt="">
@@ -98,38 +131,38 @@
         </div>
 
         <!--click to fetch-->
-        <div id="click-to-fetch" class="col-md-9" style="display:none; margin-bottom:20px">
+        <!--div id="click-to-fetch" class="col-md-9" style="display:none; margin-bottom:20px">
             <button id="from-locations-button" class="btn btn-default">
                 <span class="glyphicon glyphicon-search"></span>
-                &nbsp;&nbsp;Fetch Locations&nbsp;&nbsp;
+                &nbsp;Fetch Locations&nbsp;
             </button>
             <button id="demonstrate-as-table-button" class="btn btn-default" style="margin-left:2em">
                 <span class="glyphicon glyphicon-list"></span>
-                &nbsp;&nbsp;Demonstrate as Table Format&nbsp;&nbsp;
+                &nbsp;Demonstrate as Table Format&nbsp;
              </button>
              <button id="maps" class="btn btn-success" style="margin-left:2em">
                 <span class="glyphicon glyphicon-globe"></span>
-                &nbsp;&nbsp;Visualization - Google Map&nbsp;&nbsp;
+                &nbsp;Visualization - Google Map&nbsp;
              </button>
-        </div>
+        </div-->
 
-        <div id="loading-div" style="display:none; margin-top:10em; margin-left:400px">
+        <div id="loading-div" style="display:none; margin-top:6em; margin-left:400px">
             <img src ="http://medtube.pl/assets/FE/images/ajax-loader2.gif" />
         </div>
 
         <!--table-->
         <div id="location-div" style="display:none">
-            <table class="table table-hover table-bordered sortable" style="margin-top:8em">
+            <table class="table table-hover table-bordered sortable">
                 <thead id="thead">
-                    <tr><b>
+                    <tr class="active"><b>
                         <th width="3%" style="text-align:center">#</th>
-                        <th width="13%" style="text-align:center">Id</th>
-                        <th width="17%" style="text-align:center">Create time (GMT +0800)</th>
-                        <th width="8%" style="text-align:center">From</th>
-                        <th width="15%" style="text-align:center">Tags</th>
+                        <th width="11%" style="text-align:center">Id</th>
+                        <th width="24%" style="text-align:center">Created time (GMT +0800)</th>
+                        <th width="7%" style="text-align:center">From</th>
+                        <th width="13%" style="text-align:center">Tags</th>
                         <th width="20%" style="text-align:center">Place</th>
-                        <th width="12%" style="text-align:center">Longitude</th>
-                        <th width="12%" style="text-align:center">Latitude</th>         
+                        <th width="11%" style="text-align:center">Longitude</th>
+                        <th width="11%" style="text-align:center">Latitude</th>         
                     </b></tr>
                 </thead>
                 <tbody id="tbody">
@@ -186,7 +219,7 @@
         }(document, 'script', 'facebook-jssdk'));
 
 
-        $("#my-logout-message").html("Hi, please login with Facebook. (Recommended broswer: Google Chrome.) ");
+        $("#my-logout-message").html("Hi, please login with Facebook. (Recommended broswer: Google Chrome) ");
 
         window.fbLoaded = function(){
 
@@ -206,6 +239,7 @@
                     loginControlDiv.style.display="none";
                     var logoutControlDiv=document.getElementById("my-logout-control");
                     logoutControlDiv.style.display="block";
+
 
                     Parse.FacebookUtils.logIn("user_tagged_places,user_photos,user_status,user_friends,user_about_me,user_birthday,read_stream", {
 
@@ -231,8 +265,8 @@
                     console.log('n='+n);
 
                     // when user has been logged in, this block will be triggered.
-                    var msg = "Hi, You've logged in.";
-                    $("#my-login-message").html(msg);
+                    //var msg = "Hi, You've logged in.";
+                    //$("#my-login-message").html(msg);
                     console.log("Your login response:");
                     console.log(response);  // 這裡的authResponse裡有access_token!
 
@@ -398,6 +432,7 @@
             });     // end login btn click
 
             $("#my-logout-button").click(function(){
+                console.log("click on my-logout-button");
                 n=0;
                 console.log('n='+n);    // 按了logout後，n=6
 

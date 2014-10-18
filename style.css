@@ -10,6 +10,15 @@ body{
 button{
 	font-family: 'Varela Round', sans-serif;
 }
+#my-logout-button{
+	margin-right: 20px;
+}
+
+dt, thead{
+	font-family: 'Indie Flower', cursive;
+	font-size: 18px;
+}
+
 
 table, h4, p{
 	font-family: 'PT Sans', sans-serif;
