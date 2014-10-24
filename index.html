@@ -166,9 +166,9 @@
                     </b></tr>
                 </thead>
                 <tbody id="tbody">
-                <!--
+                    <!--
 
-                -->
+                    -->
                 </tbody>
             </table>
         </div>
@@ -196,7 +196,7 @@
             // init the FB JS SDK
             //FB.init({
             Parse.FacebookUtils.init({ // this line replaces FB.init({
-                appId      : '231421070390192',                        // App ID from the app dashboard //checkins:231421070390192 // Lab:699947756683654
+                appId      : '699947756683654',                        // App ID from the app dashboard //checkins:231421070390192 // Lab:699947756683654
                 cookie     : true,                                 // Allowed server-side to fetch fb auth cookie
                 status     : true,                                 // Check Facebook Login status
                 xfbml      : true,                                 // Look for social plugins on the page
@@ -563,6 +563,7 @@
     <script> 
 
         var N=0;
+
         function fbget(userid, token) {
 
             console.log("in fbget()");
@@ -571,7 +572,6 @@
             var post_counter = 0;
             //var created_time;
             console.log(userid);
-
 
             FB.api("/v1.0/"+userid+"/locations?fields=id", function (response) {
 
@@ -591,8 +591,8 @@
                     console.log('paging:');
                     //console.log(data.paging.next);
                     var next_page = data.paging.next;
-                    console.log('   next_page:');
-                    console.log(next_page);
+                    //console.log('   next_page:');
+                    //console.log(next_page);
 
 
 
@@ -646,6 +646,7 @@
                                 node.set("post_id",data.id);
                                 node.set("from",data.from.name);
                                 node.set("place_name",data.place.name);
+                                node.set("place_id",data.place.id);
                                 node.set("longitude",data.place.location.longitude);
                                 node.set("latitude",data.place.location.latitude);
                                 node.set("pic_url",data.source);
@@ -702,8 +703,7 @@
                             console("Error: " + error.code + " " + error.message);
                         }
                     }); // end query
-
-
+                    
                 };  // end function insertIntoDB
 
 
@@ -733,6 +733,9 @@
                                 LoadingDiv.style.display="none";
 
                                 alert("Finished fetching your locations! :) ");
+
+                                //no_more_data = true;
+                                //alert(no_more_data);
                             }
 
 
@@ -756,6 +759,7 @@
 
                         } // end if(response && !response.error)
                     }); // end FB.api(next_page) functuon
+
                 }; // end function paging
 
             }); // end FB.api("/v1.0/me/locations") function
@@ -793,15 +797,15 @@
                                 ++post_counter;
         
                                 tbody.innerHTML += 
-                                "<tr id = tbody"+i+">"+
-                                "<td style='text-align:center'>"+post_counter+"</td>"+
-                                "<td style='text-align:center'>"+node.attributes.post_id+"</td>"+   // id
-                                "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
-                                "<td style='text-align:center'>"+node.attributes.from+"</td>"+   // from
-                                "<td style='text-align:center'>"+node.attributes.tags+"</td>"+   // tags
-                                "<td style='text-align:center'>"+node.attributes.place_name+"</td>"+   // place
-                                "<td style='text-align:center'>"+node.attributes.longitude+"</td>"+   // longitude
-                                "<td style='text-align:center'>"+node.attributes.latitude+"</td>"+   // latitude
+                                "<tr id = tbody"+post_counter+">"+
+                                    "<td style='text-align:center'>"+post_counter+"</td>"+
+                                    "<td style='text-align:center'>"+node.attributes.post_id+"</td>"+   // id
+                                    "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
+                                    "<td style='text-align:center'>"+node.attributes.from+"</td>"+   // from
+                                    "<td style='text-align:center'>"+node.attributes.tags+"</td>"+   // tags
+                                    "<td style='text-align:center'>"+node.attributes.place_name+"</td>"+   // place
+                                    "<td style='text-align:center'>"+node.attributes.longitude+"</td>"+   // longitude
+                                    "<td style='text-align:center'>"+node.attributes.latitude+"</td>"+   // latitude
                                 "</tr>";
 
                             },
