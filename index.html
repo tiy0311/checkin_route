@@ -993,7 +993,7 @@
         });
  
 
-        google.maps.event.addListener(marker, 'click', function() {
+        google.maps.event.addListener(marker, 'mouseover', function() {
             if (prev_infowindow != null) prev_infowindow.close();
             prev_infowindow = infowindow;
             infowindow.open(map, marker);
