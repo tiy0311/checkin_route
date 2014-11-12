@@ -10,7 +10,10 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <script src="//www.parsecdn.com/js/parse-1.3.0.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
+    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
 
     <script src="sorttable.js"></script>
 
@@ -22,20 +25,12 @@
     <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>   <!--table-->
     <link href='http://fonts.googleapis.com/css?family=Vollkorn:700' rel='stylesheet' type='text/css'>  <!--Map's Place Name-->
     <link href='http://fonts.googleapis.com/css?family=Russo+One' rel='stylesheet' type='text/css'>     <!--Map's Titles, like Data,From,Tags-->
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <style type="text/css">
-        /* Sortable tables */
-        table.sortable thead {
-            background-color:#eee;
-            color:#666666;
-            font-weight: bold;
-            cursor: default;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="MyStyle.css">
+
     <!-- ENDBLOCK: Loading libraries -->
 
 </head>
-<body style="background-image: url(http://subtlepatterns.com/patterns/wavegrid.png)">
+<body>
     <!-- BLOCK: FB SDK initialization -->
     <div id="fb-root"></div>
     <!-- ENDBLOCK: FB SDK initialization -->
@@ -72,18 +67,26 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" id="user-info">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    &nbsp;&nbsp;Hello <span id="user-name"></span>&nbsp;&nbsp;<i class="fa fa-smile-o"></i>
+                                </a></li>
                                 <li><a href="#" id="from-locations-button">
                                     <span class="glyphicon glyphicon-search"></span>
-                                    &nbsp;&nbsp;Fetch Locations&nbsp;
+                                    &nbsp;&nbsp;Fetch Your Locations&nbsp;
                                 </a></li>
                                 <li><a href="#" id="demonstrate-as-table-button">
                                     <span class="glyphicon glyphicon-list"></span>
-                                    &nbsp;&nbsp;Demonstrate as Table Format&nbsp;
+                                    &nbsp;&nbsp;Table Demenstration&nbsp;
                                 </a></li>
                                 <li><a href="#" id="maps">
                                     <span class="glyphicon glyphicon-globe"></span>
-                                    &nbsp;&nbsp;Visualization - Google Map&nbsp;
+                                    &nbsp;&nbsp;Google Map Visualization&nbsp;
                                 </a></li>
+                                <!--li><a href="#" id="draw-route">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    &nbsp;&nbsp;Draw Your Route&nbsp;
+                                </a></li-->
 
                                 <li class="divider"></li>
 
@@ -130,22 +133,6 @@
             </div>
         </div>
 
-        <!--click to fetch-->
-        <!--div id="click-to-fetch" class="col-md-9" style="display:none; margin-bottom:20px">
-            <button id="from-locations-button" class="btn btn-default">
-                <span class="glyphicon glyphicon-search"></span>
-                &nbsp;Fetch Locations&nbsp;
-            </button>
-            <button id="demonstrate-as-table-button" class="btn btn-default" style="margin-left:2em">
-                <span class="glyphicon glyphicon-list"></span>
-                &nbsp;Demonstrate as Table Format&nbsp;
-             </button>
-             <button id="maps" class="btn btn-success" style="margin-left:2em">
-                <span class="glyphicon glyphicon-globe"></span>
-                &nbsp;Visualization - Google Map&nbsp;
-             </button>
-        </div-->
-
         <div id="loading-div" style="display:none; margin-top:6em; margin-left:400px">
             <img src ="http://medtube.pl/assets/FE/images/ajax-loader2.gif" />
         </div>
@@ -161,8 +148,7 @@
                         <th width="7%" style="text-align:center">From</th>
                         <th width="13%" style="text-align:center">Tags</th>
                         <th width="20%" style="text-align:center">Place</th>
-                        <th width="11%" style="text-align:center">Longitude</th>
-                        <th width="11%" style="text-align:center">Latitude</th>         
+                        <th width="22%" style="text-align:center">Messages</th>      
                     </b></tr>
                 </thead>
                 <tbody id="tbody">
@@ -174,6 +160,14 @@
         </div>
 
         <div id="maps-div" style="width: 1200px; height: 870px; display:none">
+        </div>
+
+        <div id="route-div" style="display:none">
+            <!--svg id="my-svg" height="5000" width="1280">
+            </svg-->
+            <div id="my-route">
+            </div>
+
         </div>
 
     </div>
@@ -194,9 +188,9 @@
 
         window.fbAsyncInit = function() {
             // init the FB JS SDK
-            //FB.init({
+            // FB.init({
             Parse.FacebookUtils.init({ // this line replaces FB.init({
-                appId      : '231421070390192',                        // App ID from the app dashboard //checkins:231421070390192 // Lab:699947756683654
+                appId      : '231421070390192',                    // App ID from the app dashboard //checkins:231421070390192 // Lab:699947756683654
                 cookie     : true,                                 // Allowed server-side to fetch fb auth cookie
                 status     : true,                                 // Check Facebook Login status
                 xfbml      : true,                                 // Look for social plugins on the page
@@ -282,10 +276,6 @@
                     var ProfileDiv=document.getElementById("my-profile");
                     ProfileDiv.style.display="block";
                     fetch_my_profile();
-
-                    // show the buttons
-                    var ButtonsDiv=document.getElementById("click-to-fetch");
-                    ButtonsDiv.style.display="block";
                 
                 } else if (response.status === 'not_authorized') {
                     //要求使用者登入，索取publish_actions權限
@@ -375,10 +365,6 @@
                         var ProfileDiv=document.getElementById("my-profile");
                         ProfileDiv.style.display="block";
                         fetch_my_profile();
-
-                        // show the buttons
-                        var ButtonsDiv=document.getElementById("click-to-fetch");
-                        ButtonsDiv.style.display="block";
                 
                     } else if (response.status === 'not_authorized') {
                         //要求使用者登入，索取publish_actions權限
@@ -454,6 +440,21 @@
 
             });
 
+            $("#user-info").click(function(){
+                console.log('Now you click the user button.....');
+
+                var MapsDiv=document.getElementById("maps-div");
+                MapsDiv.style.display="none";
+                var LocationDiv=document.getElementById("location-div");
+                LocationDiv.style.display="none";
+                var RouteDiv=document.getElementById("route-div");
+                RouteDiv.style.display="none";
+
+                var MyProfileDiv=document.getElementById("my-profile");
+                MyProfileDiv.style.display="block";
+
+            });
+
             $("#from-locations-button").click(function(){
                 console.log('Now you click the fetch button.....');
 
@@ -466,6 +467,8 @@
                 LocationDiv.style.display="none";
                 var MapsDiv=document.getElementById("maps-div");
                 MapsDiv.style.display="none";
+                var RouteDiv=document.getElementById("route-div");
+                RouteDiv.style.display="none";
 
                 setCookie("ACCESS_TOKEN", ACCESS_TOKEN);    
 
@@ -477,11 +480,15 @@
             $("#demonstrate-as-table-button").click(function(){
                 console.log('Now you click the demostrate button.....');
 
+                var MyProfileDiv=document.getElementById("my-profile");
+                MyProfileDiv.style.display="block";
                 var LocationDiv=document.getElementById("location-div");
                 LocationDiv.style.display="block";
 
                 var MapsDiv=document.getElementById("maps-div");
                 MapsDiv.style.display="none";
+                var RouteDiv=document.getElementById("route-div");
+                RouteDiv.style.display="none";
 
                 $("tbody").empty();
 
@@ -494,10 +501,11 @@
 
                 var MyProfileDiv=document.getElementById("my-profile");
                 MyProfileDiv.style.display="none";
-
                 var LocationDiv=document.getElementById("location-div");
                 LocationDiv.style.display="none";
-                console.log("location-div:none");
+                var RouteDiv=document.getElementById("route-div");
+                RouteDiv.style.display="none";
+
                 var MapsDiv=document.getElementById("maps-div");
                 MapsDiv.style.display="block";
 
@@ -507,6 +515,23 @@
                 console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
                 //fbget(userid, ACCESS_TOKEN);
                 demo_map(userid, ACCESS_TOKEN);
+            });
+
+            $("#draw-route").click(function(){
+                console.log('Now you click the draw-route button.....');
+
+                var MyProfileDiv=document.getElementById("my-profile");
+                MyProfileDiv.style.display="none";
+                var LocationDiv=document.getElementById("location-div");
+                LocationDiv.style.display="none";
+                var MapsDiv=document.getElementById("maps-div");
+                MapsDiv.style.display="none";
+
+                var RouteDiv=document.getElementById("route-div");
+                RouteDiv.style.display="block";
+
+                draw_route();
+
             });
 
             function setCookie(cname,cvalue)
@@ -536,7 +561,7 @@
                     user.set("fb_birthday",response.birthday);
                     user.set("fb_id",response.id)
                     */
-
+                    $("#user-name").html(response.name);
                     alert('Hello ' + response.name + ' ^_^');
                 });
 
@@ -631,8 +656,7 @@
 
 
                     // check if data has already been existed in parse database.    
-                    query.find({
-                        success: function(results) {
+                    query.find().then( function(results) {
                             console.log("Query successfully!!! results --> " + results.length + "                (0 --> no existed // 1 --> existed)");
                             //console.log(results);
 
@@ -651,8 +675,8 @@
                                 node.set("latitude",data.place.location.latitude);
                                 node.set("pic_url",data.source);
 
-                                console.log("created_time:"+data.created_time);
-                                console.log("updated_time:"+data.updated_time);
+                                //console.log("created_time:"+data.created_time);
+                                //console.log("updated_time:"+data.updated_time);
 
 
                                 if(data.created_time != undefined){
@@ -684,6 +708,8 @@
 
                                 node.set("message",post_message);
 
+                                return node.save();
+                                /*
                                 node.save(null, {
                                     success: function(node) {
                                         console.log('New object created with objectId: ' + node.id);
@@ -694,15 +720,15 @@
                                         console.log('Failed to create new object, with error code: ' + error.message);
                                     }
                                 });
-
+                                */
                             } else {
                                 console.log("this post_id has already existed in the database.");
                             }   // end if
-                        },
-                        error: function(error) {        // query error
+                        }).then(function(node){
+                            console.log('New object created with objectId: ' + node.id);
+                        }, function(error) {        // query error
                             console("Error: " + error.code + " " + error.message);
-                        }
-                    }); // end query
+                        }); // end query
                     
                 };  // end function insertIntoDB
 
@@ -729,13 +755,16 @@
                                 console.log(data.paging.next);
                                 var next_page = data.paging.next;
                             } else {
-                                var LoadingDiv = document.getElementById("loading-div");
-                                LoadingDiv.style.display="none";
+                                setTimeout(function(){
+                                    var LoadingDiv = document.getElementById("loading-div");
+                                    LoadingDiv.style.display="none";
+                                    alert('Finished fetching your locations! :) ');
 
-                                alert("Finished fetching your locations! :) ");
+                                },15000);
+                                //var LoadingDiv = document.getElementById("loading-div");
+                                //LoadingDiv.style.display="none";
 
-                                //no_more_data = true;
-                                //alert(no_more_data);
+                                //alert("Finished fetching your locations! :) ");
                             }
 
 
@@ -776,83 +805,35 @@
             var Node = Parse.Object.extend("Node");
             var query = new Parse.Query(Node).limit(1000);
             query.equalTo("user_id", user);
+            query.descending("created_time");
             query.find({
                 success: function(results) {
                     console.log("Successfully retrieved " + results.length + " scores.");
                     console.log(results);
                     for (var i = 0; i < results.length; i++) { 
 
-                        var post_counter = 0;
+                        var created_time = new Date(results[i].attributes.created_time).toLocaleString();
+                        var messages = results[i].attributes.message;
+                        if(messages == undefined)
+                            messages = '';
 
-                        var objectId = results[i].id;
-
-                        var query_every_node = new Parse.Query(Node);
-                        query_every_node.get(objectId, {
-                            success: function(node) {
-                                //console.log("successful!!!  query_every_node:::");
-                                //console.log(node);
-
-                                var created_time = new Date(node.attributes.created_time).toLocaleString();
-
-                                ++post_counter;
-        
-                                tbody.innerHTML += 
-                                "<tr id = tbody"+post_counter+">"+
-                                    "<td style='text-align:center'>"+post_counter+"</td>"+
-                                    "<td style='text-align:center'>"+node.attributes.post_id+"</td>"+   // id
-                                    "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
-                                    "<td style='text-align:center'>"+node.attributes.from+"</td>"+   // from
-                                    "<td style='text-align:center'>"+node.attributes.tags+"</td>"+   // tags
-                                    "<td style='text-align:center'>"+node.attributes.place_name+"</td>"+   // place
-                                    "<td style='text-align:center'>"+node.attributes.longitude+"</td>"+   // longitude
-                                    "<td style='text-align:center'>"+node.attributes.latitude+"</td>"+   // latitude
-                                "</tr>";
-
-                            },
-                            error: function(object, error) {
-                                console.log("error");
-                            }
-                        });
-                    
+                        tbody.innerHTML += 
+                            "<tr id = tbody"+(i+1)+">"+
+                            "<td style='text-align:center'>"+(i+1)+"</td>"+
+                            "<td style='text-align:center'>"+results[i].attributes.post_id+"</td>"+   // id
+                            "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
+                            "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
+                            "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'>"+results[i].attributes.place_name+"</td>"+   // place
+                            "<td style='text-align:center'>"+messages+"</td>"+   // message
+                        "</tr>";
                     }   // end for
+
                 },
                 error: function(error) {
                     console.log("Error: " + error.code + " " + error.message);
                 }
             });
-
-
-
-
-
-
-            /*
-
-                    var tbody = document.getElementById("tbody");
-                    tbody.innerHTML = "";
-
-                    
-                        post_counter++;
-            
-                        tbody.innerHTML += 
-                        "<tr id = tbody"+i+">"+
-                        "<td style='text-align:center'>"+post_counter+"</td>"+
-                        "<td style='text-align:center'>"+post_id+"</td>"+   // id
-                        "<td style='text-align:center'>"+data.data[i].created_time+"</td>"+   // created_time
-                        "<td style='text-align:center'>"+post_from+"</td>"+   // from
-                        "<td style='text-align:center'>"+post_tags+"</td>"+   // tags
-                        "<td style='text-align:center'>"+post_place+"</td>"+   // place
-                        "<td style='text-align:center'>"+post_longitude+"</td>"+   // longitude
-                        "<td style='text-align:center'>"+post_latitude+"</td>"+   // latitude
-                        "</tr>";
-
-                        last_tags_length = post_tags_length;
-
-                    
-                    } // end for
-
-                    */
-
 
         };  // end function demo_table
 </script>
@@ -867,6 +848,7 @@
         var Node = Parse.Object.extend("Node");
         var query = new Parse.Query(Node).limit(1000);
         query.equalTo("user_id", user);
+        query.descending("created_time");
         query.find({
                 success: function(results) {
                     console.log("Successfully retrieved " + results.length + " scores.");
@@ -874,11 +856,31 @@
 
                     initialize();
 
+                    var route_array = [];
+
                     for (var i = 0; i < results.length; i++) { 
 
                         var post_counter = 0;
 
                         var objectId = results[i].id;
+
+                        
+                        var latitude = results[i].attributes.latitude;
+                        var longitude = results[i].attributes.longitude;
+
+/*
+                        route_array.push(new google.maps.LatLng(latitude,longitude));
+
+                        var route = new google.maps.Polyline({
+                            path: route_array,
+                            geodesic: true,
+                            strokeColor: '#F75D59',
+                            strokeOpacity: 1.0,
+                            strokeWeight: 4
+                        });
+
+                        route.setMap(map);
+*/
 
                         var query_every_node = new Parse.Query(Node);
                         query_every_node.get(objectId, {
@@ -909,9 +911,9 @@
         //console.log(data);
 
         map = new google.maps.Map(document.getElementById('maps-div'), {
-            zoom: 7,
-            center: new google.maps.LatLng(23.686772,121.520269), // 設定地圖中心點
-            mapTypeId: google.maps.MapTypeId.ROADMAP // HYBRID,ROADMAP,SATELLITE,TERRAIN  
+            zoom: 12,
+            center: new google.maps.LatLng(25.05,121.533), // 設定地圖中心點
+            mapTypeId: google.maps.MapTypeId.TERRAIN // HYBRID,ROADMAP,SATELLITE,TERRAIN  
         });    
 
         google.maps.event.addDomListener(window, 'load', initialize);
@@ -937,12 +939,16 @@
         //console.log(post_pic_url);
 
 
+
         var pt = new google.maps.LatLng(post_latitude,post_longitude);
         var marker = new google.maps.Marker({
             map: map,
             position : pt,
+            animation: google.maps.Animation.DROP,
+            /*icon: "http://png.findicons.com/files/icons/1665/sweetie_basepack/16/16_circle_red.png",*/
             title: post_place
         });
+        google.maps.event.addListener(marker, 'click', toggleBounce);
 
 
         if(post_message == undefined){
@@ -997,10 +1003,201 @@
             if (prev_infowindow != null) prev_infowindow.close();
             prev_infowindow = infowindow;
             infowindow.open(map, marker);
-        });            
+        }); 
 
-        };   // end addSite
+        function toggleBounce() {
 
+            if (marker.getAnimation() != null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            }     
+        }           
+
+    };   // end addSite
+
+</script>
+<script type="text/javascript" language="javascript">
+    function draw_route(){
+        console.log('in draw_route');
+
+        //var my_svg = document.getElementById("my-svg");
+        var my_route = document.getElementById("my-route");
+
+
+        for(var i=0; i<13; i++){
+            var j = i % 23;
+
+            
+            my_route.innerHTML += '<div class="circle c'+j+'">
+                                        <span class="hint--top" data-hint="test!">
+                                            <div class="inner-marker">
+                                    </div></span></div>';
+            //$("#my-route").append('<div class="circle">');
+
+        }
+    };  // end function draw_route()
+        
+
+
+
+
+
+
+/*
+        var dates = [];
+        
+        var user = Parse.User.current();
+
+        var Node = Parse.Object.extend("Node");
+        var query = new Parse.Query(Node).limit(1000);
+        query.equalTo("user_id", user);
+        query.descending("created_time");
+        query.find().then( function(results) {
+
+            console.log("Successfully retrieved " + results.length + " scores.");
+            console.log(results);
+
+            for(var i=0; i<results.length; i++){
+                //var post_time = new Date(results[i].attributes.created_time).toLocaleString();
+                var date = results[i].attributes.created_time.substring(0,10);
+
+                //console.log("date:"+date);
+
+                dates.push(date);
+            }
+
+            console.log(dates);
+
+
+
+            // draw diagram            
+            my_svg.innerHTML += '<circle cx='+cx+' cy='+cy+' r='+r+' />';
+            my_svg.innerHTML += '<text x='+cx+' y='+cy+50+'>2014/11/04</text>';
+            for (var i = 0; i < results.length; i++) { 
+
+                var j = i % 23;
+                console.log("j:"+j);
+
+                if(counter % 2 == 0){
+                    if(j % 12 == 0){
+                        ++counter;
+                        my_svg.innerHTML += '<line x1='+(cx + a*(j-1))+' y1='+(cy + b*(counter-1) + r)+' x2='+(cx + a*(j-1)-35)+' y2='+(cy + b*counter)+' />';
+                        my_svg.innerHTML += '<circle cx='+(cx + a*(j-1)-2*r)+' cy='+(cy + b*counter)+' r='+r+' />';
+                        my_svg.innerHTML += '<text x='+(cx+ a*(j-1)-2*r)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                    } else {
+                        console.log("draw odd lines.");
+                        my_svg.innerHTML += '<line x1='+(cx + a*(j-1) + r)+' y1='+(cy + counter*b)+' x2='+(cx + a*j)+' y2='+(cy + counter*b)+' />';
+                        my_svg.innerHTML += '<circle cx='+(cx + a*j)+' cy='+( cy+counter*b )+' r='+r+' />';
+                        if(j % 11 == 0){
+                            my_svg.innerHTML += '<text x='+(cx+ a*j+10)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                        } else {
+                            my_svg.innerHTML += '<text x='+(cx+ a*j)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                        }
+                    }
+                } else {
+                    if(j % 12 == 0){
+                        ++counter;
+                        my_svg.innerHTML += '<line x1='+(cx+35)+' y1='+(cy + b*(counter-1)+r)+' x2='+cx+' y2='+(cy + b*counter)+' />';
+                        my_svg.innerHTML += '<circle cx='+cx+' cy='+(cy + b*counter)+' r='+r+' />';
+                        my_svg.innerHTML += '<text x='+cx+' y='+(cy + counter*b+50)+'>2014/11/04</text>';
+
+                    } else {
+                        console.log("draw even lines.");
+                        my_svg.innerHTML += '<line x1='+(cx + a*(23-j)-r)+' y1='+(cy + counter*b)+' x2='+(cx + a*(23-j)+5)+' y2='+(cy + counter*b)+' />';
+                        my_svg.innerHTML += '<circle cx='+(cx + a*(23-j)-2*r)+' cy='+( cy+counter*b )+' r='+r+' />';
+                        if(j % 11 == 0){
+                            my_svg.innerHTML += '<text x='+(cx+40)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                        } else {
+                            my_svg.innerHTML += '<text x='+(cx+ a*(23-j)-2*r)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                        }
+                    }
+                }
+                    
+            }   // end for
+            
+
+        }, function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+
+        }); // end query.find
+
+*/
+
+/*
+        //console.log(dates);
+
+        my_svg.innerHTML += '<circle cx='+cx+' cy='+cy+' r='+r+' />';
+        my_svg.innerHTML += '<text x=50 y=100>2014/11/04</text>';
+
+        for(var i=1; i<306; i++){
+            var j = i%23;
+            if(counter % 2 == 0){
+                if(j % 12 == 0){
+                    ++counter;
+                    my_svg.innerHTML += '<line x1='+(cx + a*(j-1))+' y1='+(cy + b*(counter-1) + r)+' x2='+(cx + a*(j-1)-35)+' y2='+(cy + b*counter)+' />';
+                    my_svg.innerHTML += '<circle cx='+(cx + a*(j-1)-2*r)+' cy='+(cy + b*counter)+' r='+r+' />';
+                    my_svg.innerHTML += '<text x='+(cx+ a*(j-1)-2*r)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                } else {
+                    my_svg.innerHTML += '<line x1='+(cx + a*(j-1) + r)+' y1='+(cy + counter*b)+' x2='+(cx + a*j)+' y2='+(cy + counter*b)+' />';
+                    my_svg.innerHTML += '<circle cx='+(cx + a*j)+' cy='+( cy+counter*b )+' r='+r+' />';
+                    if(j % 11 == 0){
+                        my_svg.innerHTML += '<text x='+(cx+ a*j+10)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                    } else {
+                        my_svg.innerHTML += '<text x='+(cx+ a*j)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                    }
+                }
+            } else {
+                if(j % 12 == 0){
+                    ++counter;
+                    my_svg.innerHTML += '<line x1='+(cx+35)+' y1='+(cy + b*(counter-1)+r)+' x2='+cx+' y2='+(cy + b*counter)+' />';
+                    my_svg.innerHTML += '<circle cx='+cx+' cy='+(cy + b*counter)+' r='+r+' />';
+                    my_svg.innerHTML += '<text x='+cx+' y='+(cy + counter*b+50)+'>2014/11/04</text>';
+
+                } else {
+                    my_svg.innerHTML += '<line x1='+(cx + a*(23-j)-r)+' y1='+(cy + counter*b)+' x2='+(cx + a*(23-j)+5)+' y2='+(cy + counter*b)+' />';
+                    my_svg.innerHTML += '<circle cx='+(cx + a*(23-j)-2*r)+' cy='+( cy+counter*b )+' r='+r+' />';
+                    if(j % 11 == 0){
+                        my_svg.innerHTML += '<text x='+(cx+40)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                    } else {
+                        my_svg.innerHTML += '<text x='+(cx+ a*(23-j)-2*r)+' y='+(cy+counter*b+50)+'>2014/11/04</text>';
+                    }
+                }
+            }
+        }   // end for
+*/
+/*  
+        // original diagram
+        my_svg.innerHTML += '<circle cx='+cx+' cy='+cy+' r='+r+' stroke="#777" stroke-width="2" fill="#e7e7e7" />';
+        my_svg.innerHTML += '<text x=20 y=100 fill="#777">2014/11/04</text>';
+        //$("#my-svg").append("svg:text").attr("x","20").attr("y","100").attr("fill","#777").html("2014/11/04");
+        for(var i=1; i<306; i++){
+            var j = i%24;
+            if(counter % 2 == 0){
+                if(j % 12 == 0){
+                    ++counter;
+                    my_svg.innerHTML += '<line x1='+(cx + a*(j-1))+' y1='+(cy + b*(counter-1) + r)+' x2='+(cx + a*(j-1))+' y2='+(cy + b*counter)+' style="stroke:#777; stroke-width:8" />';
+                    my_svg.innerHTML += '<circle cx='+(cx + a*(j-1))+' cy='+(cy + b*counter)+' r='+r+' stroke="#777" stroke-width="2" fill="#e7e7e7" />';
+                } else {
+                    my_svg.innerHTML += '<line x1='+(cx + a*(j-1) + r)+' y1='+(cy + counter*b)+' x2='+(cx + a*j)+' y2='+(cy + counter*b)+' style="stroke:#777; stroke-width:8" />';
+                    my_svg.innerHTML += '<circle cx='+(cx + a*j)+' cy='+( cy+counter*b )+' r='+r+' stroke="#777" stroke-width="2" fill="#e7e7e7" />';
+
+                }
+            } else {
+                if(j % 12 == 0){
+                    ++counter;
+                    my_svg.innerHTML += '<circle cx='+cx+' cy='+(cy + b*(counter-1))+' r='+r+' stroke="#777" stroke-width="2" fill="#e7e7e7" />';
+                    my_svg.innerHTML += '<line x1='+cx+' y1='+(cy + b*(counter-1) + r)+' x2='+cx+' y2='+(cy + b*counter)+' style="stroke:#777; stroke-width:8" />';
+                    my_svg.innerHTML += '<circle cx='+cx+' cy='+(cy + b*counter)+' r='+r+' stroke="#777" stroke-width="2" fill="#e7e7e7" />';
+                } else {
+                    my_svg.innerHTML += '<circle cx='+(cx + a*(23-j))+' cy='+( cy+counter*b )+' r='+r+' stroke="#777" stroke-width="2" fill="#e7e7e7" />';
+                    my_svg.innerHTML += '<line x1='+(cx + a*(24-j) - r)+' y1='+(cy + counter*b)+' x2='+(cx + a*(23-j) + r)+' y2='+(cy + counter*b)+' style="stroke:#777; stroke-width:8" />';
+                }
+            }
+        }   // end for
+*/
+
+    //};  // end draw_route
 </script>
 </body>
 </html>
