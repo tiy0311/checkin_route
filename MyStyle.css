@@ -83,7 +83,7 @@ h2{
   width: 380px;
   padding: 20px;
   float: left;
-  background-color: #f3f3fe;
+  background-color: #e0e0e0;
 }
 
 #myroute li.left {
@@ -108,11 +108,11 @@ h2{
 .left .down_cont{
   width: 350px;
   height: 20px;
-  border-top: 1px dotted #ccc;
+  border-top: 1px dotted #a6a6a6;
   float: left;
 }
 .left .down_cont time{
-  margin: 10px;
+  margin: 5px;
   float :right;
 }
 
@@ -126,14 +126,14 @@ h2{
 
 .right img{
   max-width:150px;
-  border-radius: 20px 30px / 50px 90px;
+  border-radius: 10px 60px / 40px 30px;
   padding:2px;
   margin:10px;
   float:right;
 }
 
 .right h3{
-  margin-top:10px;
+  margin:10px 0 10px;
 }
 .right p{
   float:left;
@@ -141,11 +141,11 @@ h2{
 .right .down_cont{
   width: 350px;
   height: 20px;
-  border-top: 1px dotted #ccc;
+  border-top: 1px dotted #a6a6a6;
   float: left;
 }
 .right .down_cont time{
-  margin: 10px;
+  margin: 5px;
 }
 
 
@@ -161,7 +161,7 @@ h2{
   left: -6px;
   width: 12px;
   height: 12px;
-  background-color: #f3f3fe;
+  background-color: #e0e0e0;
   transform: rotate(45deg);
 }
 
@@ -197,8 +197,8 @@ h2{
   top: 12px;
   right: -32px;
   left: -32px;
-  width: 23px;
-  height: 23px;
+  width: 25px;
+  height: 25px;
 }
 
 #myroute li.left:after {
