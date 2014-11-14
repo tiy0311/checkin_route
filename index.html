@@ -83,10 +83,10 @@
                                     <span class="glyphicon glyphicon-globe"></span>
                                     &nbsp;&nbsp;Google Map Visualization&nbsp;
                                 </a></li>
-                                <!--li><a href="#" id="draw-route">
+                                <li><a href="#" id="draw-route">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                     &nbsp;&nbsp;Draw Your Route&nbsp;
-                                </a></li-->
+                                </a></li>
 
                                 <li class="divider"></li>
 
@@ -165,8 +165,8 @@
         <div id="route-div" style="display:none">
             <!--svg id="my-svg" height="5000" width="1280">
             </svg-->
-            <div id="my-route">
-            </div>
+            <ul id="myroute">
+            </ul>
 
         </div>
 
@@ -1022,20 +1022,89 @@
         console.log('in draw_route');
 
         //var my_svg = document.getElementById("my-svg");
-        var my_route = document.getElementById("my-route");
+        var myroute = document.getElementById("myroute");
+
+        var user = Parse.User.current();
+
+        var Node = Parse.Object.extend("Node");
+        var query = new Parse.Query(Node).limit(1000);
+        query.equalTo("user_id", user);
+        query.descending("created_time");
+        query.find().then( function(results) {
+
+            console.log("Successfully retrieved " + results.length + " scores.");
+            console.log(results);
+
+            for(var i=0; i<results.length; i++){
+
+                var pic_url = results[i].attributes.pic_url;
+                var place_name = results[i].attributes.place_name;
+                var message = results[i].attributes.message;
+                var post_time = new Date(results[i].attributes.created_time).toLocaleString();
+
+                if(i % 2 == 0){  // left
+                    if (pic_url == undefined){
+
+                        // this result don't contain pic_url & message 
+                        if (message == undefined){
+                            myroute.innerHTML += '<li class="left"><h3>' + place_name + '</h3><div class="down_cont"><time>' + post_time + '</time></div></li>';
+                        } 
+
+                        // this result don't contain pic_url
+                        else {                        
+                            myroute.innerHTML += '<li class="left"><h3>' + place_name + '</h3><p>' + message + '</p><div class="down_cont"><time>' + post_time + '</time></div></li>';
+                        }
+
+                    } else {
+
+                        // this result don't contain message
+                        if (message == undefined){
+                            myroute.innerHTML += '<li class="left"><img src="' + pic_url + '" /><h3>' + place_name + '</h3><div class="down_cont"><time>' + post_time + '</time></div></li>';
+                        }
+
+                        // this result contains everything
+                        else {
+                            myroute.innerHTML += '<li class="left"><img src="' + pic_url + '" /><h3>' + place_name + '</h3><p>' + message + '</p><div class="down_cont"><time>' + post_time + '</time></div></li>';
+                        }
+                    }
+
+                    
+                } else {         // right
+                    if (pic_url == undefined){
+
+                        // this result don't contain pic_url & message 
+                        if (message == undefined){
+                            myroute.innerHTML += '<li class="right"><h3>' + place_name + '</h3><div class="down_cont"><time>' + post_time + '</time></div></li>';
+                        } 
+
+                        // this result don't contain pic_url
+                        else {                        
+                            myroute.innerHTML += '<li class="right"><h3>' + place_name + '</h3><p>' + message + '</p><div class="down_cont"><time>' + post_time + '</time></div></li>';
+                        }
+
+                    } else {
+
+                        // this result don't contain message
+                        if (message == undefined){
+                            myroute.innerHTML += '<li class="right"><img src="' + pic_url + '" /><h3>' + place_name + '</h3><div class="down_cont"><time>' + post_time + '</time></div></li>';
+                        }
+
+                        // this result contains everything
+                        else {
+                            myroute.innerHTML += '<li class="right"><img src="' + pic_url + '" /><h3>' + place_name + '</h3><p>' + message + '</p><div class="down_cont"><time>' + post_time + '</time></div></li>';
+                        }
+                    }
+                }
+    
+            }
+    
+        }, function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+
+        }); // end query.find
 
 
-        for(var i=0; i<13; i++){
-            var j = i % 23;
 
-            
-            my_route.innerHTML += '<div class="circle c'+j+'">
-                                        <span class="hint--top" data-hint="test!">
-                                            <div class="inner-marker">
-                                    </div></span></div>';
-            //$("#my-route").append('<div class="circle">');
-
-        }
     };  // end function draw_route()
         
 
