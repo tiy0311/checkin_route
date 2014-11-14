@@ -65,7 +65,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display:none">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;<span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size:16px;"><span class="glyphicon glyphicon-cog"></span>&nbsp;<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="#" id="user-info">
                                     <span class="glyphicon glyphicon-user"></span>
@@ -480,11 +480,11 @@
             $("#demonstrate-as-table-button").click(function(){
                 console.log('Now you click the demostrate button.....');
 
-                var MyProfileDiv=document.getElementById("my-profile");
-                MyProfileDiv.style.display="block";
                 var LocationDiv=document.getElementById("location-div");
                 LocationDiv.style.display="block";
 
+                var MyProfileDiv=document.getElementById("my-profile");
+                MyProfileDiv.style.display="none";
                 var MapsDiv=document.getElementById("maps-div");
                 MapsDiv.style.display="none";
                 var RouteDiv=document.getElementById("route-div");
@@ -529,6 +529,8 @@
 
                 var RouteDiv=document.getElementById("route-div");
                 RouteDiv.style.display="block";
+
+                $("#myroute").empty();
 
                 draw_route();
 
