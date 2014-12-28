@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CHECK-IN ROUTE</title>
+    <title>PHOTOCATION</title>
 
     <!-- BLOCK: Loading libraries -->
-    <!--script src="./your_secret.js"></script>
-    <script src="../your_secret.js"></script-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <script src="//www.parsecdn.com/js/parse-1.3.0.min.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <!--script src="//code.jquery.com/jquery-1.10.2.js"></script-->
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="date.js"></script>
     <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
 
     <script src="sorttable.js"></script>
 
-    <!--google font links-->
+    <!-- google font links -->
     <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'> <!--Check-in Route-->
     <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>      <!--button-->
@@ -25,9 +26,33 @@
     <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>   <!--table-->
     <link href='http://fonts.googleapis.com/css?family=Vollkorn:700' rel='stylesheet' type='text/css'>  <!--Map's Place Name-->
     <link href='http://fonts.googleapis.com/css?family=Russo+One' rel='stylesheet' type='text/css'>     <!--Map's Titles, like Data,From,Tags-->
+    <!--link rel="stylesheet/less" type="text/css" href="carousel.less">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.1.0/less.min.js"></script-->
     <link rel="stylesheet" type="text/css" href="MyStyle.css">
 
     <!-- ENDBLOCK: Loading libraries -->
+
+    <script>
+    $(function() {
+        $( "#from" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            changeYear: true,
+            onClose: function( selectedDate ) {
+                $( "#to" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#to" ).datepicker({
+            defaultDate: "+1w",
+            changeMonth: true,
+            changeYear: true,
+            onClose: function( selectedDate ) {
+                $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+    });
+    </script>
+
 
 </head>
 <body>
@@ -39,11 +64,81 @@
 
     <!-- Button for login to Facebook -->
     <div id="my-html-playground" class="container">
-        <nav class="navbar navbar-default" role="navigation">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                
+                <div id="brand">
+                    <a class="navbar-brand" href="#" style="font-size:26px">
+                        <span class="glyphicon glyphicon-map-marker"></span>
+                        Photocation.
+                    </a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div id="my-logout-control" style="display:none">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+
+                        <ul class="nav navbar-nav navbar-right">
+
+                            <li id="user-info"><a href="#">
+                                <span class="glyphicon glyphicon-user"></span>
+                                    &nbsp;&nbsp;<span id="user-name"></span>&nbsp;&nbsp;
+                                    <span class="sr-only">(current)</span>
+                            </a></li>
+
+
+                            <li><a href="#" id="maps"><span class="glyphicon glyphicon-picture"></span>&nbsp;&nbsp;Photocation&nbsp;</a></li>
+
+
+                            <form class="navbar-form navbar-left" role="search">
+                                <span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search:&nbsp;
+                               
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="search_text">
+                                </div>
+
+                                <!--button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;Search!&nbsp;</button-->
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Please select <span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <li><a href="#" onclick="searchAll()">All</a></li>
+                                    <li><a href="#" onclick="searchFrom()">From</a></li>
+                                    <li><a href="#" onclick="searchTags()">Tags</a></li>
+                                    <li><a href="#" onclick="searchPlace()">Place Name</a></li>
+                                    <li><a href="#" onclick="searchMessage()">Messages</a></li>
+                                </ul>
+
+                            </form>
+
+
+                            <li><a href="#" id="my-logout-button">
+                                <span class="glyphicon glyphicon-log-out"></span>
+                                &nbsp;&nbsp;Logout&nbsp;
+                            </a></li>
+
+                        </ul>
+
+                    </div><!-- /.navbar-collapse -->
+                </div>
+
+
+                <div id="my-login-control" style="display:bolck; float:right">
+                    <button id="my-login-button" type="button" class="btn btn-default navbar-btn" style="margin-right:20px">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        &nbsp;Login with Facebook&nbsp;
+                    </button>
+                    <p class="navbar-text" id="my-logout-message" style="font-size:17px">&nbsp;&nbsp;</p>
+                </div>
+
+            </div><!-- /.container-fluid -->
+        </nav>
+
+
+        <!--nav class="navbar navbar-default" role="navigation">
             <div id="brand" style="margin-left:10px">
                 <a class="navbar-brand" href="#" style="font-size:26px">
                     <span class="glyphicon glyphicon-map-marker"></span>
-                    Check-in Route.
+                    Photocation.
                 </a>
             </div>
             <div id="my-login-control" style="display:bolck; float:right">
@@ -52,7 +147,7 @@
                     &nbsp;Login with Facebook&nbsp;
                 </button>
                 <p class="navbar-text" id="my-logout-message" style="font-size:17px">&nbsp;&nbsp;</p>
-            </div>
+            </div-->
             <!--div id="my-logout-control" style="display:none; float:right">
                 <button id="my-logout-button" type="button" class="btn btn-default navbar-btn" style="margin-right:20px">
                     <span class="glyphicon glyphicon-off"></span>
@@ -61,7 +156,7 @@
                 <p class="navbar-text" id="my-login-message" style="font-size:17px">&nbsp;&nbsp;</p>
             </div-->
 
-            <div id="my-logout-control" style="display:none">
+            <!--div id="my-logout-control" style="display:none">
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="display:none">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -72,20 +167,16 @@
                                     &nbsp;&nbsp;Hello <span id="user-name"></span>&nbsp;&nbsp;<i class="fa fa-smile-o"></i>
                                 </a></li>
                                 <li><a href="#" id="from-locations-button">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                    &nbsp;&nbsp;Fetch Your Locations&nbsp;
+                                    <i class="fa fa-refresh"></i>
+                                    &nbsp;&nbsp;Refetch Data&nbsp;
                                 </a></li>
                                 <li><a href="#" id="demonstrate-as-table-button">
-                                    <span class="glyphicon glyphicon-list"></span>
-                                    &nbsp;&nbsp;Table Demenstration&nbsp;
+                                    <span class="glyphicon glyphicon-search"></span>
+                                    &nbsp;&nbsp;Table Demonstration&nbsp;
                                 </a></li>
                                 <li><a href="#" id="maps">
                                     <span class="glyphicon glyphicon-globe"></span>
-                                    &nbsp;&nbsp;Google Map Visualization&nbsp;
-                                </a></li>
-                                <li><a href="#" id="draw-route">
-                                    <span class="glyphicon glyphicon-pencil"></span>
-                                    &nbsp;&nbsp;Draw Your Route&nbsp;
+                                    &nbsp;&nbsp;Photocation&nbsp;
                                 </a></li>
 
                                 <li class="divider"></li>
@@ -100,14 +191,23 @@
                 </div>
             </div>
 
-        </nav>
+        </nav-->
+
+        <div class="alert alert-info" role="alert" id="warning-div" style="display:none">
+            <h4 style="margin:0.8em 0 0.5em 3.5em">
+                Remember to tag yourself in photos on the facebook &nbsp;<i class="fa fa-smile-o"></i><br />
+                After tagging, please click <button class="btn btn-default" onClick="fbget_photos(userid, ACCESS_TOKEN);">here</button> to refetch your data and wait for a few seconds.
+            </h4>
+        </div>
 
         <!-- Profile Area -->
-        <div id="my-profile" class="row" style="display:none;margin-bottom:20px;margin-left:40px">
+        <div id="my-profile" class="row" style="display:none;margin: 3em 0 20px 40px">
+
             <div class="col-md-3">
                 <!-- Profile Picture -->
                 <img id="my-profile-picture" class="img-thumbnail" src="" alt="">
             </div>
+
             <div class="col-md-9" style="font-size:16px">
                 <!-- Profile Information -->
                 <dl class="dl-horizontal">
@@ -133,33 +233,76 @@
             </div>
         </div>
 
-        <div id="loading-div" style="display:none; margin-top:6em; margin-left:400px">
-            <img src ="http://medtube.pl/assets/FE/images/ajax-loader2.gif" />
+        <div id="loading-div" style="display:none; margin-top:2em; margin-left:400px">
+            <h4>Fetching data...<br />
+                Please wait for a few seconds &nbsp;<i class="fa fa-smile-o"></i></h4>
+            <!--img src ="http://medtube.pl/assets/FE/images/ajax-loader2.gif" /-->
         </div>
+
+
+        <div id="photo-wall" style="display:none; margin-left:-3em">
+            <ul id="holder">
+            </ul>
+        </div>
+
 
         <!--table-->
         <div id="location-div" style="display:none">
-            <table class="table table-hover table-bordered sortable">
+            
+            <!--div class="row" style="margin:2em">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="search_text">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Please select <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                <li><a href="#" onclick="searchAll()">All</a></li>
+                                <li><a href="#" onclick="searchFrom()">From</a></li>
+                                <li><a href="#" onclick="searchTags()">Tags</a></li>
+                                <li><a href="#" onclick="searchPlace()">Place Name</a></li>
+                                <li><a href="#" onclick="searchMessage()">Messages</a></li>
+                            </ul>
+                        </div><!-- /btn-group ->
+                    </div><!-- /input-group ->
+                </div><!-- /.col-lg-6 ->
+            </div><!-- /.row -->
+
+
+            <h4 id="no_results" style="display:none; margin:5em">Sorry, find no results!</h4>
+
+            <table class="table table-hover table-bordered sortable" id="table">
+                
                 <thead id="thead">
                     <tr class="active"><b>
                         <th width="3%" style="text-align:center">#</th>
                         <th width="11%" style="text-align:center">Id</th>
-                        <th width="24%" style="text-align:center">Created time (GMT +0800)</th>
+                        <th width="26%" style="text-align:center">Created time (GMT +0800)</th>
                         <th width="7%" style="text-align:center">From</th>
-                        <th width="13%" style="text-align:center">Tags</th>
+                        <th width="11%" style="text-align:center">Tags</th>
                         <th width="20%" style="text-align:center">Place</th>
                         <th width="22%" style="text-align:center">Messages</th>      
                     </b></tr>
                 </thead>
-                <tbody id="tbody">
-                    <!--
 
-                    -->
+
+                <tbody id="tbody">
+
                 </tbody>
+
             </table>
         </div>
 
-        <div id="maps-div" style="width: 1200px; height: 870px; display:none">
+        <div id="calendar" style="display:none; margin: 3em 0 1.5em 5em">
+            &nbsp;<span class="glyphicon glyphicon-calendar"></span>&nbsp;Select Date:&nbsp;&nbsp;
+            <label for="from">from</label>
+            <input type="text" id="from" name="from">
+            <label for="to">to</label>
+            <input type="text" id="to" name="to">
+
+            <button class="btn btn-default" type="submit" onclick="selectDate()">Go!</button>
+        </div>
+
+        <div id="maps-div" style="width: 1000px; height: 450px; margin: 2em 0 4em 5em; display:none">
         </div>
 
         <div id="route-div" style="display:none">
@@ -194,7 +337,7 @@
                 cookie     : true,                                 // Allowed server-side to fetch fb auth cookie
                 status     : true,                                 // Check Facebook Login status
                 xfbml      : true,                                 // Look for social plugins on the page
-                version    : 'v2.0'
+                version    : 'v2.2'
             });
 
             // Additional initialization code such as adding Event Listeners goes here
@@ -229,10 +372,13 @@
 
                 // if the user has logged in
                 if (response.status === 'connected') {
-                    var loginControlDiv=document.getElementById("my-login-control");
-                    loginControlDiv.style.display="none";
-                    var logoutControlDiv=document.getElementById("my-logout-control");
-                    logoutControlDiv.style.display="block";
+                    var loginControlDiv = document.getElementById("my-login-control");
+                    loginControlDiv.style.display = "none";
+
+                    var logoutControlDiv = document.getElementById("my-logout-control");
+                    logoutControlDiv.style.display = "block";
+                    var warningDiv = document.getElementById("warning-div");
+                    warningDiv.style.display = "block";
 
 
                     Parse.FacebookUtils.logIn("user_tagged_places,user_photos,user_status,user_friends,user_about_me,user_birthday,read_stream", {
@@ -244,7 +390,7 @@
                                 alert("User logged in through Facebook!");
                             }
                             FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                n=1;
+                                n=11111111;
                                 console.log('n='+n);
                                 console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                             });
@@ -272,10 +418,25 @@
                     userid=response.authResponse.userID;
                     console.log('userid: '+userid);
 
+
                     // fetch the profile
                     var ProfileDiv=document.getElementById("my-profile");
                     ProfileDiv.style.display="block";
                     fetch_my_profile();
+
+
+                    // show photo wall
+                    var PhotoWallDiv = document.getElementById("photo-wall");
+                    PhotoWallDiv.style.display = "block";
+                    photo_wall();
+
+                    
+                    // fetch user's data
+                    var LoadingDiv = document.getElementById("loading-div");
+                    LoadingDiv.style.display="block";
+                    fbget_photos(userid, ACCESS_TOKEN);
+                    
+
                 
                 } else if (response.status === 'not_authorized') {
                     //要求使用者登入，索取publish_actions權限
@@ -290,7 +451,7 @@
                             }
 
                             FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                n=3;
+                                n=333333333;
                                 console.log('n='+n);
                                 console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                             });
@@ -313,7 +474,7 @@
                             }
                             
                             FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                n=4;
+                                n=4444444444;
                                 console.log('n='+n);
                                 console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                             });
@@ -339,10 +500,13 @@
 
                     // if the user has logged in
                     if (response.status === 'connected') {
-                        var loginControlDiv=document.getElementById("my-login-control");
-                        loginControlDiv.style.display="none";
-                        var logoutControlDiv=document.getElementById("my-logout-control");
-                        logoutControlDiv.style.display="block";
+                        var loginControlDiv = document.getElementById("my-login-control");
+                        loginControlDiv.style.display = "none";
+
+                        var logoutControlDiv = document.getElementById("my-logout-control");
+                        logoutControlDiv.style.display = "block";
+                        var warningDiv = document.getElementById("warning-div");
+                        warningDiv.style.display = "block";
 
                         n=5;
                         console.log('n='+n);
@@ -378,7 +542,7 @@
                                 }
                             
                                 FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                    n=6;
+                                    n=666666666666;
                                     console.log('n='+n);
                                     console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                                 });
@@ -401,7 +565,7 @@
                                 }
                             
                                 FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                    n=7;
+                                    n=777777777777;
                                     console.log('n='+n);
                                     console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                                 });
@@ -423,10 +587,10 @@
                 console.log('n='+n);    // 按了logout後，n=6
 
                 FB.logout(function(response){
-                    var logoutControlDiv=document.getElementById("my-login-control");
-                    logoutControlDiv.style.display="block";
-                    var loginControlDiv=document.getElementById("my-logout-control");
-                    loginControlDiv.style.display="none";
+                    var logoutControlDiv = document.getElementById("my-login-control");
+                    logoutControlDiv.style.display = "block";
+                    var loginControlDiv = document.getElementById("my-logout-control");
+                    loginControlDiv.style.display = "none";
 
                     n=0.5;
                     console.log('n='+n);
@@ -443,15 +607,22 @@
             $("#user-info").click(function(){
                 console.log('Now you click the user button.....');
 
-                var MapsDiv=document.getElementById("maps-div");
-                MapsDiv.style.display="none";
-                var LocationDiv=document.getElementById("location-div");
-                LocationDiv.style.display="none";
-                var RouteDiv=document.getElementById("route-div");
-                RouteDiv.style.display="none";
+                var MapsDiv = document.getElementById("maps-div");
+                MapsDiv.style.display = "none";
+                var LocationDiv = document.getElementById("location-div");
+                LocationDiv.style.display = "none";
+                var RouteDiv = document.getElementById("route-div");
+                RouteDiv.style.display = "none";
+                var CalendarDiv = document.getElementById("calendar");
+                CalendarDiv.style.display = "none";
 
-                var MyProfileDiv=document.getElementById("my-profile");
-                MyProfileDiv.style.display="block";
+                var MyProfileDiv = document.getElementById("my-profile");
+                MyProfileDiv.style.display = "block";
+
+                // show photo wall
+                var PhotoWallDiv = document.getElementById("photo-wall");
+                PhotoWallDiv.style.display = "block";
+                photo_wall();
 
             });
 
@@ -469,12 +640,17 @@
                 MapsDiv.style.display="none";
                 var RouteDiv=document.getElementById("route-div");
                 RouteDiv.style.display="none";
+                var PhotoWallDiv = document.getElementById("photo-wall");
+                PhotoWallDiv.style.display = "none";
+                var CalendarDiv = document.getElementById("calendar");
+                CalendarDiv.style.display="none";
 
                 setCookie("ACCESS_TOKEN", ACCESS_TOKEN);    
 
                 console.log('userid: '+userid);             // correct
                 console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
-                fbget(userid, ACCESS_TOKEN);
+                fbget_photos(userid, ACCESS_TOKEN);
+                //fbget_feed(userid,ACCESS_TOKEN);
             });
 
             $("#demonstrate-as-table-button").click(function(){
@@ -489,6 +665,10 @@
                 MapsDiv.style.display="none";
                 var RouteDiv=document.getElementById("route-div");
                 RouteDiv.style.display="none";
+                var PhotoWallDiv = document.getElementById("photo-wall");
+                PhotoWallDiv.style.display = "none";
+                var CalendarDiv = document.getElementById("calendar");
+                CalendarDiv.style.display="none";
 
                 $("tbody").empty();
 
@@ -505,7 +685,15 @@
                 LocationDiv.style.display="none";
                 var RouteDiv=document.getElementById("route-div");
                 RouteDiv.style.display="none";
+                var PhotoWallDiv = document.getElementById("photo-wall");
+                PhotoWallDiv.style.display = "none";
 
+
+                // show calendar
+                var Calendar = document.getElementById("calendar");
+                Calendar.style.display="block";
+
+                // show map
                 var MapsDiv=document.getElementById("maps-div");
                 MapsDiv.style.display="block";
 
@@ -515,6 +703,10 @@
                 console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
                 //fbget(userid, ACCESS_TOKEN);
                 demo_map(userid, ACCESS_TOKEN);
+
+                $("#myroute").empty();
+                route();
+
             });
 
             $("#draw-route").click(function(){
@@ -526,13 +718,17 @@
                 LocationDiv.style.display="none";
                 var MapsDiv=document.getElementById("maps-div");
                 MapsDiv.style.display="none";
+                var LoadingDiv = document.getElementById("loading-div");
+                LoadingDiv.style.display="none";
+                var PhotoWallDiv = document.getElementById("photo-wall");
+                PhotoWallDiv.style.display = "none";
 
                 var RouteDiv=document.getElementById("route-div");
                 RouteDiv.style.display="block";
 
                 $("#myroute").empty();
 
-                draw_route();
+                route();
 
             });
 
@@ -563,6 +759,7 @@
                     user.set("fb_birthday",response.birthday);
                     user.set("fb_id",response.id)
                     */
+
                     $("#user-name").html(response.name);
                     alert('Hello ' + response.name + ' ^_^');
                 });
@@ -570,7 +767,6 @@
 
                 FB.api('/me/picture?width=160', function(response) {
                     var my_picture_url = response.data.url;
-
                     $("#my-profile-picture").attr('src', my_picture_url);
                 });
 
@@ -589,51 +785,82 @@
 
     <script> 
 
-        var N=0;
+        function photo_wall(){
+            console.log("in photo_wall() ");
 
-        function fbget(userid, token) {
 
-            console.log("in fbget()");
-  
+            $('#photo-wall ul').empty();
+
+            var user = Parse.User.current();
+
+            var Node = Parse.Object.extend("Node");
+            var query = new Parse.Query(Node).limit(4);
+            query.equalTo("user_id", user);
+            query.descending("created_time");
+            query.find({
+                success: function(results) {
+                    console.log("Successfully retrieved " + results.length + " results.");
+                    console.log(results);
+                    for (var i = 0; i < results.length; i++) { 
+
+                        $('#photo-wall ul').append(
+                            $('<li>').append(
+                                $('<a>').attr('href','#').append(
+                                    $('<img>').attr('src',results[i].attributes.pic_url))));
+
+
+                    }   // end for
+
+                },
+                error: function(error) {
+                    console.log("Error: " + error.code + " " + error.message);
+                }
+            }); // end query
+        };  // end function photo_wall
+
+
+
+        var N = 0;
+
+        function fbget_photos(userid, token) {
+
+            console.log("in fbget_photos()");
+
+
+            var LoadingDiv = document.getElementById("loading-div");
+            LoadingDiv.style.display = "block";
+
             var last_tags_length;
             var post_counter = 0;
             //var created_time;
-            console.log(userid);
+            //console.log(userid);
 
-            FB.api("/v1.0/"+userid+"/locations?fields=id", function (response) {
-
+            //FB.api("/v1.0/"+userid+"/photos?fields=id", function (response) {
+            FB.api("/v2.0/"+userid+"/photos?fields=id", function (response) {
     
                 if(response && !response.error) {      
                     var data = response;
 
-                    console.log('data.data.length: '+data.data.length);
-                    console.log('in fbget_locations and the data is');
+                    //console.log('data.data.length: '+data.data.length);
+                    console.log('in fbget_photos and the data is');
                     console.log(data);
-                    //console.dir(response);
-
-                    ++N;
-                    console.log('NN='+N);   // NN=2
 
                     
                     console.log('paging:');
-                    //console.log(data.paging.next);
+                    console.log(data.paging.next);
                     var next_page = data.paging.next;
-                    //console.log('   next_page:');
-                    //console.log(next_page);
 
 
-
-                    for(var i = 0;i < data.data.length;i++){
+                    for(var i = 0; i < data.data.length; i++){
 
                         var post_id = data.data[i].id;
-                        //console.log("post_id"+post_id);
                 
                         FB.api("/"+post_id, function (response) {
         
                             if(response && !response.error) {
-                                //console.log("in fbgetMMM");      
-                                //console.log(response);
-                                insertIntoDB(response);
+
+                                ++N;
+                                insertIntoDB(response,N);
 
                             }   // end if
 
@@ -641,12 +868,12 @@
                 
                     }   // end for
 
-                    paging(next_page);
+                    paging_photos(next_page,userid,token);
 
                 } // end if(response && !response.error) 
 
         
-                function insertIntoDB(data){
+                function insertIntoDB(data,N){
 
                     console.log("in insertIntoDB()");
                     console.log(data);
@@ -659,80 +886,327 @@
 
                     // check if data has already been existed in parse database.    
                     query.find().then( function(results) {
-                            console.log("Query successfully!!! results --> " + results.length + "                (0 --> no existed // 1 --> existed)");
-                            //console.log(results);
+                        
+                        console.log("Query successfully!!! results --> " + results.length + "                (0 --> no existed // 1 --> existed)");
 
-                            // no existed data in DB, so insert new data into DB
-                            if(results.length == 0 ){
+                        // no existed data in DB, so insert new data into DB
+                        if(results.length == 0 ){
 
-                                var user = Parse.User.current();
-                                var node = new Node();
+                            var user = Parse.User.current();
+                            var node = new Node();
 
-                                node.set("user_id",user);
-                                node.set("post_id",data.id);
-                                node.set("from",data.from.name);
+                            node.set("user_id",user);
+                            node.set("post_id",data.id);
+                            node.set("from",data.from.name);
+                            node.set("pic_url",data.source);
+
+                            //console.log("created_time:"+data.created_time);
+                            //console.log("updated_time:"+data.updated_time);
+
+
+                            if(data.created_time != undefined){
+                                node.set("created_time",data.created_time);
+                            } else {
+                                node.set("created_time",data.updated_time);
+                            }
+
+
+                            var post_tags = "";
+                            if(data.tags != null){
+                                post_tags_length = data.tags.data.length;
+                                for(var j = 0; j < post_tags_length; j++){
+                                    if(j == 0){
+                                        post_tags += data.tags.data[j].name;
+                                    } else {
+                                        post_tags += ", ";
+                                        post_tags += data.tags.data[j].name;
+                                    }
+                                }
+                            }
+                            node.set("tags",post_tags);
+
+
+                            var post_message = data.message;
+                            if(post_message == undefined){
+                                post_message = data.name;
+                            }
+                            node.set("message",post_message);
+
+
+                            var post_place_data = data.place;
+                            if( post_place_data != undefined ){
                                 node.set("place_name",data.place.name);
                                 node.set("place_id",data.place.id);
                                 node.set("longitude",data.place.location.longitude);
                                 node.set("latitude",data.place.location.latitude);
-                                node.set("pic_url",data.source);
+                            }
+
+
+                            return node.save();
+
+                        } else {
+                            console.log("this post_id has already existed in the database.");
+                        }   // end if
+                    }).then(function(node){
+
+                        console.log('New object created with objectId: ' + node.id);
+
+                        if( N % 20 == 0)
+                            $('#photo-wall ul').empty();
+
+                        if( N % 5 == 0){
+                            $('#photo-wall ul').append(
+                                $('<li>').append(
+                                    $('<a>').attr('href','#').append(
+                                        $('<img>').attr('src',node.attributes.pic_url))));
+                        }
+
+                    }, function(error) {        // query error
+                        console("Error: " + error.code + " " + error.message);
+                    }); // end query
+                    
+                };  // end function insertIntoDB
+
+
+
+                function paging_photos(next_page,userid,token){
+
+                    FB.api(next_page, function (response) {
+
+                        if(response && !response.error) {      
+                            var data = response;
+
+                            console.log('data.data.length: '+data.data.length);
+                            console.log('in fbget_photos paging and the data is');
+                            console.log(data);
+                            //console.dir(response);
+
+
+                            console.log('paging:');
+                            console.log(data.paging.next);
+                            var next_page = data.paging.next;
+
+                                
+                                //var LoadingDiv = document.getElementById("loading-div");
+                                //LoadingDiv.style.display="none";
+
+                                //alert("Finished fetching your locations! :) ");
+
+                            if(next_page != undefined){
+                                for(var i = 0;i < data.data.length;i++){
+
+                                    var post_id = data.data[i].id;
+                                    //console.log("post_id"+post_id);
+                    
+                                    FB.api("/"+post_id, function (response) {
+            
+                                        if(response && !response.error) {
+
+                                            ++N;
+                                            insertIntoDB(response,N);
+
+                                        }   // end if
+                                    }); // end FB.api(post_id)
+                    
+                                }   // end for
+
+                                paging_photos(next_page,userid,token);
+                            }
+                            else {
+                                console.log("fbget_photos finish.");
+                                console.log("start fbget_feed.");
+                                fbget_feed(userid,token);
+                            }
+
+                        } // end if(response && !response.error)
+                    }); // end FB.api(next_page) functuon
+
+                }; // end function paging
+
+            }); // end FB.api("/v1.0/me/locations") function
+            
+        }; // end function fbget
+
+
+        function fbget_feed(userid, token) {
+
+            console.log("in fbget_feed()");
+  
+            var last_tags_length;
+            var post_counter = 0;
+            //var created_time;
+            console.log(userid);
+
+            //FB.api("/me/photos?fields=id", function (response) {
+            //FB.api("/v2.0/"+userid+"?fields=tagged_places", function (response) {
+            FB.api("/v2.0/me/feed?fields=place", function (response) {
+            //FB.api(userid, {fields: 'tagged_places'}, function(response) {
+    
+                if(response && !response.error) {      
+                    var data = response;
+
+                    //console.log('data.data.length: '+data.data.length);
+                    console.log('in fbget_feed and the data is');
+                    console.log(data);
+                    //console.dir(response);
+
+                    
+                    console.log('paging:');
+                    //console.log(data.paging.next);
+                    var next_page = data.paging.next;
+                    console.log('   next_page:');
+                    console.log(next_page);
+
+
+
+                    for(var i = 0;i < data.data.length;i++){
+
+                        if(data.data[i].place != undefined){
+
+                            var post_id = data.data[i].id;
+                            //console.log("post_id"+post_id);
+                
+                            FB.api("/"+post_id, function (response) {
+        
+                                if(response && !response.error) {
+                                    //console.log("in fbgetMMM");      
+                                    //console.log(response);
+
+                                    ++N;
+                                    insertIntoDB(response,N);
+
+                                }   // end if
+
+                            }); // end FB.api
+                        }
+                    }   // end for
+
+                    paging(next_page);
+
+                } // end if(response && !response.error) 
+
+        
+                function insertIntoDB(data,N){
+
+                    console.log("in insertIntoDB()");
+                    console.log(data);
+
+                    var Node = Parse.Object.extend("Node");
+                    var query = new Parse.Query(Node);
+                    query.equalTo("post_id", data.id);
+                    console.log("querying-----------------post_id:"+data.id);
+
+
+                    // check if data has already been existed in parse database.    
+                    //query.find().then( function(results) {
+                    query.find({
+                        success: function(results) {
+                            console.log("Query successfully!!! results --> " + results.length + "                (0 --> no existed // 1 --> existed)");
+                            //console.log(results);
+                            //console.log(data);
+
+                            var created_time = data.created_time;
+                            var same_date = created_time.substring(0,11);
+
+                            var query_2 = new Parse.Query(Node);
+                            query_2.equalTo("place_name", data.place.name);
+                            //query_2.equalTo("created_time", created_time);  // string!
+                            query_2.startsWith("created_time", same_date);  // filter same data
+
+                            query_2.find().then( function(results) {
+
+                                // no existed data in DB, so insert new data into DB
+                                if(results.length == 0 ){
+
+                                    var user = Parse.User.current();
+                                    var node = new Node();
+
+                                    node.set("user_id",user);
+                                    node.set("post_id",data.id);
+                                    node.set("from",data.from.name);
+
+                                    if(data.picture != undefined){
+                                        node.set("pic_url",data.picture);
+                                    }
 
                                 //console.log("created_time:"+data.created_time);
                                 //console.log("updated_time:"+data.updated_time);
 
 
-                                if(data.created_time != undefined){
-                                    node.set("created_time",data.created_time);
-                                } else {
-                                    node.set("created_time",data.updated_time);
-                                }
+                                    if(data.created_time != undefined){
+                                        node.set("created_time",data.created_time);
+                                    } else {
+                                        node.set("created_time",data.updated_time);
+                                    }
 
-                                var post_tags = "";
-                                if(data.tags != null){
-                                    post_tags_length = data.tags.data.length;
-                                    for(var j = 0; j < post_tags_length; j++){
-                                        //console.log(j+"---------"+data.tags.data[j].name);
-                                        if(j == 0){
-                                            post_tags += data.tags.data[j].name;
-                                        } else {
-                                            post_tags += ", ";
-                                            post_tags += data.tags.data[j].name;
+
+                                    var post_tags = "";
+                                    if(data.with_tags != null){
+                                        post_tags_length = data.with_tags.data.length;
+                                        for(var j = 0; j < post_tags_length; j++){
+                                            //console.log(j+"---------"+data.tags.data[j].name);
+                                            if(j == 0){
+                                                post_tags += data.with_tags.data[j].name;
+                                            } else {
+                                                post_tags += ", ";
+                                                post_tags += data.with_tags.data[j].name;
+                                            }
+                                            //console.log("............post_tags:"+post_tags);
                                         }
-                                        //console.log("............post_tags:"+post_tags);
                                     }
-                                }
-                                node.set("tags",post_tags);
+                                    node.set("tags",post_tags);
 
-                                var post_message = data.message;
-                                if(post_message == undefined){
-                                    post_message = data.name;
-                                }
 
-                                node.set("message",post_message);
-
-                                return node.save();
-                                /*
-                                node.save(null, {
-                                    success: function(node) {
-                                        console.log('New object created with objectId: ' + node.id);
-                                    },
-                                    error: function(node, error) {
-                                        // Execute any logic that should take place if the save fails.
-                                        // error is a Parse.Error with an error code and message.
-                                        console.log('Failed to create new object, with error code: ' + error.message);
+                                    var post_message = data.message;
+                                    if(post_message == undefined){
+                                        post_message = data.name;
                                     }
-                                });
-                                */
-                            } else {
-                                console.log("this post_id has already existed in the database.");
-                            }   // end if
-                        }).then(function(node){
-                            console.log('New object created with objectId: ' + node.id);
-                        }, function(error) {        // query error
-                            console("Error: " + error.code + " " + error.message);
-                        }); // end query
+                                    node.set("message",post_message);
+
+
+                                    var post_place_data = data.place;
+                                    if( post_place_data != undefined ){
+                                        node.set("place_name",data.place.name);
+                                        node.set("place_id",data.place.id);
+                                        node.set("longitude",data.place.location.longitude);
+                                        node.set("latitude",data.place.location.latitude);
+                                    }
+
+                                    return node.save();
+                                
+                                } else {
+                                    console.log("this post_id has already existed in the database.");
+                                }   // end if
+                                
+                            }).then(function(node){
+                                console.log('New object created with objectId: ' + node.id);
+                                //console.log(node);
+
+                                if( N % 20 == 0)
+                                    $('#photo-wall ul').empty();
+
+                                if( N % 5 == 0){
+                                    $('#photo-wall ul').append(
+                                        $('<li>').append(
+                                            $('<a>').attr('href','#').append(
+                                                $('<img>').attr('src',node.attributes.pic_url))));
+                                }
+
+                            }, function(error) {        // query error
+                                console.log("Error: " + error.code + " " + error.message);
+                            }); // end query
+
+                            
+                            
+                            },
+                            error: function(error){
+                                console.log("Error: " + error.code + " " + error.message);
+                            }
+                            
+
+                        }); // end query.find()
                     
-                };  // end function insertIntoDB
+                    };  // end function insertIntoDB
 
 
 
@@ -745,44 +1219,48 @@
                             var data = response;
 
                             console.log('data.data.length: '+data.data.length);
-                            console.log('in fbget_locations and the data is');
+                            console.log('in fbget_feed paging and the data is');
                             console.log(data);
                             //console.dir(response);
-
-                            //++N;
-                            //console.log('N='+N);
 
                             if(data.data.length > 0){
                                 console.log('paging:');
                                 console.log(data.paging.next);
                                 var next_page = data.paging.next;
                             } else {
+                                console.log('data.data.length <= 0');
+
+                                
                                 setTimeout(function(){
                                     var LoadingDiv = document.getElementById("loading-div");
                                     LoadingDiv.style.display="none";
                                     alert('Finished fetching your locations! :) ');
+                                    //window.location.reload();
+                                },10000);
 
-                                },15000);
-                                //var LoadingDiv = document.getElementById("loading-div");
-                                //LoadingDiv.style.display="none";
-
-                                //alert("Finished fetching your locations! :) ");
                             }
 
 
                             for(var i = 0;i < data.data.length;i++){
 
-                                var post_id = data.data[i].id;
-                                //console.log("post_id"+post_id);
+                                if(data.data[i].place != undefined){
+
+                                    var post_id = data.data[i].id;
+                                    //console.log("post_id"+post_id);
                 
-                                FB.api("/"+post_id, function (response) {
+                                    FB.api("/"+post_id, function (response) {
         
-                                    if(response && !response.error) {
+                                        if(response && !response.error) {
+                                            //console.log("in fbgetMMM");      
+                                            //console.log(response);
 
-                                        insertIntoDB(response);
+                                            ++N;
+                                            insertIntoDB(response,N);
 
-                                    }   // end if
-                                }); // end FB.api(post_id)
+                                        }   // end if
+
+                                    }); // end FB.api
+                                }
                 
                             }   // end for
 
@@ -796,6 +1274,7 @@
             }); // end FB.api("/v1.0/me/locations") function
             
         }; // end function fbget
+
 
         function demo_table(){
 
@@ -815,9 +1294,14 @@
                     for (var i = 0; i < results.length; i++) { 
 
                         var created_time = new Date(results[i].attributes.created_time).toLocaleString();
+
                         var messages = results[i].attributes.message;
                         if(messages == undefined)
                             messages = '';
+
+                        var place_name = results[i].attributes.place_name;
+                        if(place_name == undefined)
+                            place_name = '';
 
                         tbody.innerHTML += 
                             "<tr id = tbody"+(i+1)+">"+
@@ -826,7 +1310,7 @@
                             "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
                             "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
                             "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
-                            "<td style='text-align:center'>"+results[i].attributes.place_name+"</td>"+   // place
+                            "<td style='text-align:center'>"+place_name+"</td>"+   // place
                             "<td style='text-align:center'>"+messages+"</td>"+   // message
                         "</tr>";
                     }   // end for
@@ -835,9 +1319,453 @@
                 error: function(error) {
                     console.log("Error: " + error.code + " " + error.message);
                 }
-            });
+            }); // end query
 
         };  // end function demo_table
+
+        function searchAll(){
+            console.log("now search All!");
+
+
+            var LocationDiv = document.getElementById("location-div");
+            LocationDiv.style.display = "block";
+
+            var MyProfileDiv = document.getElementById("my-profile");
+            MyProfileDiv.style.display = "none";
+            var MapsDiv = document.getElementById("maps-div");
+            MapsDiv.style.display = "none";
+            var RouteDiv = document.getElementById("route-div");
+            RouteDiv.style.display = "none";
+            var PhotoWallDiv = document.getElementById("photo-wall");
+            PhotoWallDiv.style.display = "none";
+            var CalendarDiv = document.getElementById("calendar");
+            CalendarDiv.style.display = "none";
+
+
+            $("tbody").empty();
+
+
+            var search_text = document.getElementById("search_text").value;
+            console.log("search_text:"+search_text);
+
+            var tbody = document.getElementById("tbody");
+            tbody.innerHTML = "";
+
+            var user = Parse.User.current();
+            var Node = Parse.Object.extend("Node");
+
+
+            var query_1 = new Parse.Query(Node);
+            query_1.contains("from",search_text);
+
+            var query_2 = new Parse.Query(Node);
+            query_2.contains("tags",search_text);
+
+            var query_3 = new Parse.Query(Node);
+            query_3.contains("place_name",search_text);
+
+            var query_4 = new Parse.Query(Node);
+            query_4.contains("message",search_text);
+
+            var mainQuery = new Parse.Query(Node).limit(1000);
+            mainQuery.equalTo("user_id", user);
+            mainQuery = Parse.Query.or(query_1, query_2, query_3, query_4);
+            mainQuery.descending("created_time");
+            mainQuery.find().then(function(results) {
+
+                console.log("Successfully retrieved " + results.length + " results of all.");
+                console.log(results);
+
+
+                if(results.length == 0){
+                    var table = document.getElementById("table");
+                    table.style.display = "none";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="block";
+                }
+                else {
+                    var table = document.getElementById("table");
+                    table.style.display = "block";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="none";
+                }
+
+
+                for (var i = 0; i < results.length; i++) {
+
+                    var created_time = new Date(results[i].attributes.created_time).toLocaleString();
+
+                    var messages = results[i].attributes.message;
+                    if(messages == undefined)
+                        messages = '';
+
+                    var place_name = results[i].attributes.place_name;
+                    if(place_name == undefined)
+                        place_name = '';
+
+                    tbody.innerHTML += 
+                        "<tr id = tbody"+(i+1)+">"+
+                            "<td style='text-align:center'>"+(i+1)+"</td>"+
+                            "<td style='text-align:center'>"+results[i].attributes.post_id+"</td>"+   // id
+                            "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
+                            "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
+                            "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'>"+place_name+"</td>"+   // place
+                            "<td style='text-align:center'>"+messages+"</td>"+   // message
+                        "</tr>";
+
+
+                }   // end for
+            }); // end query.find().then
+
+        };  // end function searchFrom
+
+
+
+        function searchFrom(){
+            console.log("now search From!");
+
+
+            var LocationDiv = document.getElementById("location-div");
+            LocationDiv.style.display = "block";
+
+            var MyProfileDiv = document.getElementById("my-profile");
+            MyProfileDiv.style.display = "none";
+            var MapsDiv = document.getElementById("maps-div");
+            MapsDiv.style.display = "none";
+            var RouteDiv = document.getElementById("route-div");
+            RouteDiv.style.display = "none";
+            var PhotoWallDiv = document.getElementById("photo-wall");
+            PhotoWallDiv.style.display = "none";
+            var CalendarDiv = document.getElementById("calendar");
+            CalendarDiv.style.display = "none";
+
+
+            $("tbody").empty();
+
+
+            var search_text = document.getElementById("search_text").value;
+            console.log("search_text:"+search_text);
+
+            var tbody = document.getElementById("tbody");
+            tbody.innerHTML = "";
+
+            var user = Parse.User.current();
+
+            var Node = Parse.Object.extend("Node");
+            var query = new Parse.Query(Node).limit(1000);
+            query.equalTo("user_id", user);
+            query.descending("created_time");
+            query.contains("from",search_text);
+            query.find().then(function(results) {
+
+                console.log("Successfully retrieved " + results.length + " results of from.");
+                console.log(results);
+
+
+                if(results.length == 0){
+                    var table = document.getElementById("table");
+                    table.style.display = "none";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="block";
+                }
+                else {
+                    var table = document.getElementById("table");
+                    table.style.display = "block";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="none";
+                }
+
+
+                for (var i = 0; i < results.length; i++) {
+
+                    var created_time = new Date(results[i].attributes.created_time).toLocaleString();
+
+                    var messages = results[i].attributes.message;
+                    if(messages == undefined)
+                        messages = '';
+
+                    var place_name = results[i].attributes.place_name;
+                    if(place_name == undefined)
+                        place_name = '';
+
+                    tbody.innerHTML += 
+                        "<tr id = tbody"+(i+1)+">"+
+                            "<td style='text-align:center'>"+(i+1)+"</td>"+
+                            "<td style='text-align:center'>"+results[i].attributes.post_id+"</td>"+   // id
+                            "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
+                            "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
+                            "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'>"+place_name+"</td>"+   // place
+                            "<td style='text-align:center'>"+messages+"</td>"+   // message
+                        "</tr>";
+
+
+                }   // end for
+            }); // end query.find().then
+
+        };  // end function searchFrom
+
+
+        function searchTags(){
+            console.log("now search Tags!");
+
+
+            var LocationDiv = document.getElementById("location-div");
+            LocationDiv.style.display = "block";
+
+            var MyProfileDiv = document.getElementById("my-profile");
+            MyProfileDiv.style.display = "none";
+            var MapsDiv = document.getElementById("maps-div");
+            MapsDiv.style.display = "none";
+            var RouteDiv = document.getElementById("route-div");
+            RouteDiv.style.display = "none";
+            var PhotoWallDiv = document.getElementById("photo-wall");
+            PhotoWallDiv.style.display = "none";
+            var CalendarDiv = document.getElementById("calendar");
+            CalendarDiv.style.display = "none";
+
+
+            $("tbody").empty();
+
+
+            var search_text = document.getElementById("search_text").value;
+            console.log("search_text:"+search_text);
+
+            var tbody = document.getElementById("tbody");
+            tbody.innerHTML = "";
+
+            var user = Parse.User.current();
+
+            var Node = Parse.Object.extend("Node");
+            var query = new Parse.Query(Node).limit(1000);
+            query.equalTo("user_id", user);
+            query.descending("created_time");
+            query.contains("tags",search_text);
+            query.find().then(function(results) {
+
+                console.log("Successfully retrieved " + results.length + " results of tags.");
+                console.log(results);
+
+
+                if(results.length == 0){
+                    var table = document.getElementById("table");
+                    table.style.display = "none";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="block";
+                }
+                else {
+                    var table = document.getElementById("table");
+                    table.style.display = "block";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="none";
+                }
+
+
+                for (var i = 0; i < results.length; i++) {
+
+                    var created_time = new Date(results[i].attributes.created_time).toLocaleString();
+
+                    var messages = results[i].attributes.message;
+                    if(messages == undefined)
+                        messages = '';
+
+                    var place_name = results[i].attributes.place_name;
+                    if(place_name == undefined)
+                        place_name = '';
+
+                    tbody.innerHTML += 
+                        "<tr id = tbody"+(i+1)+">"+
+                            "<td style='text-align:center'>"+(i+1)+"</td>"+
+                            "<td style='text-align:center'>"+results[i].attributes.post_id+"</td>"+   // id
+                            "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
+                            "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
+                            "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'>"+place_name+"</td>"+   // place
+                            "<td style='text-align:center'>"+messages+"</td>"+   // message
+                        "</tr>";
+
+
+                }   // end for
+            }); // end query.find().then
+
+
+
+        };  // end function searchTags
+
+
+        function searchPlace(){
+            console.log("now search Place Name!");
+
+
+            var LocationDiv = document.getElementById("location-div");
+            LocationDiv.style.display = "block";
+
+            var MyProfileDiv = document.getElementById("my-profile");
+            MyProfileDiv.style.display = "none";
+            var MapsDiv = document.getElementById("maps-div");
+            MapsDiv.style.display = "none";
+            var RouteDiv = document.getElementById("route-div");
+            RouteDiv.style.display = "none";
+            var PhotoWallDiv = document.getElementById("photo-wall");
+            PhotoWallDiv.style.display = "none";
+            var CalendarDiv = document.getElementById("calendar");
+            CalendarDiv.style.display = "none";
+
+
+            $("tbody").empty();
+
+
+            var search_text = document.getElementById("search_text").value;
+            console.log("search_text:"+search_text);
+
+            var tbody = document.getElementById("tbody");
+            tbody.innerHTML = "";
+
+            var user = Parse.User.current();
+
+            var Node = Parse.Object.extend("Node");
+            var query = new Parse.Query(Node).limit(1000);
+            query.equalTo("user_id", user);
+            query.descending("created_time");
+            query.contains("place_name",search_text);
+            query.find().then(function(results) {
+
+                console.log("Successfully retrieved " + results.length + " results of place_name.");
+                console.log(results);
+
+
+                if(results.length == 0){
+                    var table = document.getElementById("table");
+                    table.style.display = "none";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="block";
+                }
+                else {
+                    var table = document.getElementById("table");
+                    table.style.display = "block";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="none";
+                }
+
+
+                for (var i = 0; i < results.length; i++) {
+
+                    var created_time = new Date(results[i].attributes.created_time).toLocaleString();
+
+                    var messages = results[i].attributes.message;
+                    if(messages == undefined)
+                        messages = '';
+
+                    var place_name = results[i].attributes.place_name;
+                    if(place_name == undefined)
+                        place_name = '';
+
+                    tbody.innerHTML += 
+                        "<tr id = tbody"+(i+1)+">"+
+                            "<td style='text-align:center'>"+(i+1)+"</td>"+
+                            "<td style='text-align:center'>"+results[i].attributes.post_id+"</td>"+   // id
+                            "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
+                            "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
+                            "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'>"+place_name+"</td>"+   // place
+                            "<td style='text-align:center'>"+messages+"</td>"+   // message
+                        "</tr>";
+
+
+                }   // end for
+            }); // end query.find().then
+
+        };  // end function searchPlace
+
+
+
+        function searchMessage(){
+            console.log("now search Messages!");
+
+
+            var LocationDiv = document.getElementById("location-div");
+            LocationDiv.style.display = "block";
+
+            var MyProfileDiv = document.getElementById("my-profile");
+            MyProfileDiv.style.display = "none";
+            var MapsDiv = document.getElementById("maps-div");
+            MapsDiv.style.display = "none";
+            var RouteDiv = document.getElementById("route-div");
+            RouteDiv.style.display = "none";
+            var PhotoWallDiv = document.getElementById("photo-wall");
+            PhotoWallDiv.style.display = "none";
+            var CalendarDiv = document.getElementById("calendar");
+            CalendarDiv.style.display = "none";
+
+
+            $("tbody").empty();
+
+
+            var search_text = document.getElementById("search_text").value;
+            console.log("search_text:"+search_text);
+
+            var tbody = document.getElementById("tbody");
+            tbody.innerHTML = "";
+
+            var user = Parse.User.current();
+
+            var Node = Parse.Object.extend("Node");
+            var query = new Parse.Query(Node).limit(1000);
+            query.equalTo("user_id", user);
+            query.descending("created_time");
+            query.contains("message",search_text);
+            query.find().then(function(results) {
+
+                console.log("Successfully retrieved " + results.length + " results of messages.");
+                console.log(results);
+
+
+                if(results.length == 0){
+                    var table = document.getElementById("table");
+                    table.style.display = "none";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="block";
+                }
+                else {
+                    var table = document.getElementById("table");
+                    table.style.display = "block";
+                    var no_results = document.getElementById("no_results");
+                    no_results.style.display="none";
+                }
+
+
+                for (var i = 0; i < results.length; i++) {
+
+                    var created_time = new Date(results[i].attributes.created_time).toLocaleString();
+
+                    var messages = results[i].attributes.message;
+                    if(messages == undefined)
+                        messages = '';
+
+                    var place_name = results[i].attributes.place_name;
+                    if(place_name == undefined)
+                        place_name = '';
+
+                    tbody.innerHTML += 
+                        "<tr id = tbody"+(i+1)+">"+
+                            "<td style='text-align:center'>"+(i+1)+"</td>"+
+                            "<td style='text-align:center'>"+results[i].attributes.post_id+"</td>"+   // id
+                            "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
+                            "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
+                            "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'>"+place_name+"</td>"+   // place
+                            "<td style='text-align:center'>"+messages+"</td>"+   // message
+                        "</tr>";
+
+
+                }   // end for
+            }); // end query.find().then
+
+
+        };  // end function searchPlace
+
+
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
@@ -850,27 +1778,27 @@
         var Node = Parse.Object.extend("Node");
         var query = new Parse.Query(Node).limit(1000);
         query.equalTo("user_id", user);
+        //query.exists("place_name");
         query.descending("created_time");
         query.find({
-                success: function(results) {
-                    console.log("Successfully retrieved " + results.length + " scores.");
-                    console.log(results);
+            success: function(results) {
+                console.log("Successfully retrieved " + results.length + " scores.");
+                console.log(results);
 
-                    initialize();
+                initialize();
 
-                    var route_array = [];
+                //var route_array = [];
 
-                    for (var i = 0; i < results.length; i++) { 
+                for (var i = 0; i < results.length; i++) { 
 
-                        var post_counter = 0;
+                    var post_counter = 0;
 
-                        var objectId = results[i].id;
+                    //var objectId = results[i].id;
 
-                        
-                        var latitude = results[i].attributes.latitude;
-                        var longitude = results[i].attributes.longitude;
+/*                        
+                    var latitude = results[i].attributes.latitude;
+                    var longitude = results[i].attributes.longitude;
 
-/*
                         route_array.push(new google.maps.LatLng(latitude,longitude));
 
                         var route = new google.maps.Polyline({
@@ -883,27 +1811,29 @@
 
                         route.setMap(map);
 */
-
-                        var query_every_node = new Parse.Query(Node);
-                        query_every_node.get(objectId, {
-                            success: function(node) {
+                    addSite(map,results[i]);
+/*
+                    var query_every_node = new Parse.Query(Node);
+                    query_every_node.get(objectId, {
+                        success: function(node) {
                                 //console.log("successful!!!  query_every_node:::");
                                 //console.log(node);
 
-                                addSite(map,node);
+                            addSite(map,node);
 
                             },
-                            error: function(object, error) {
-                                console.log("error");
-                            }
-                        });
-                    
-                    }   // end for
-                },
-                error: function(error) {
-                    console.log("Error: " + error.code + " " + error.message);
-                }
-            });
+                        error: function(object, error) {
+                            console.log("error");
+                        }
+                    }); // end query_every_node
+*/
+
+                }   // end for
+            },
+            error: function(error) {
+                console.log("Error: " + error.code + " " + error.message);
+            }
+        });
 
     };  // end demo_map
 
@@ -923,8 +1853,9 @@
 
 
     var prev_infowindow = null;
-    function addSite(map,node) {
+    function addSite(map, node) {
         console.log('in addSite()');
+        //console.log(node);
 
         var post_time = new Date(node.attributes.created_time).toLocaleString();
 
@@ -1018,88 +1949,84 @@
 
     };   // end addSite
 
-</script>
-<script type="text/javascript" language="javascript">
-    function draw_route(){
-        console.log('in draw_route');
+    function selectDate(){
 
-        //var my_svg = document.getElementById("my-svg");
-        var myroute = document.getElementById("myroute");
+        console.log("in selectDate()");
+
+        var d_from = document.getElementById("from").value;
+        console.log("d_from:"+d_from);
+        var d_to = document.getElementById("to").value;
+        console.log("d_to:"+d_to);
+
+        var date_from = new Date(d_from.slice(6,10), d_from.slice(0,2)-1, d_from.slice(3,5) );
+        var date_to = new Date(d_to.slice(6,10), d_to.slice(0,2)-1, d_to.slice(3,5) );
+        console.log("date_from:"+date_from);
+        console.log("date_to"+date_to);
+
 
         var user = Parse.User.current();
 
         var Node = Parse.Object.extend("Node");
         var query = new Parse.Query(Node).limit(1000);
         query.equalTo("user_id", user);
+        query.exists("pic_url");
+        query.descending("created_time");
+        query.find({
+            success: function(results) {
+                console.log("Successfully retrieved " + results.length + " scores.");
+                console.log(results);
+
+                initialize();
+
+                //var route_array = [];
+                var object = [];
+
+                for (var i = 0; i < results.length; i++) { 
+
+                    var post_time = new Date(results[i].attributes.created_time);
+                    //console.log(post_time.between(date_from, date_to));
+
+                    if(post_time.between(date_from, date_to) == true){
+                        addSite(map,results[i]);
+
+                        object.push(results[i]);
+                    }
+                    
+                }   // end for
+
+                draw_route(object);
+
+            },
+            error: function(error) {
+                console.log("Error: " + error.code + " " + error.message);
+            }
+        });
+
+    };
+
+</script>
+<script type="text/javascript" language="javascript">
+    function route(){
+        console.log('in route()');
+
+        //var my_svg = document.getElementById("my-svg");
+
+
+        var user = Parse.User.current();
+
+        var Node = Parse.Object.extend("Node");
+        var query = new Parse.Query(Node).limit(1000);
+        query.equalTo("user_id", user);
+        query.exists("pic_url");
         query.descending("created_time");
         query.find().then( function(results) {
 
             console.log("Successfully retrieved " + results.length + " scores.");
             console.log(results);
 
-            for(var i=0; i<results.length; i++){
+            draw_route(results);
 
-                var pic_url = results[i].attributes.pic_url;
-                var place_name = results[i].attributes.place_name;
-                var message = results[i].attributes.message;
-                var post_time = new Date(results[i].attributes.created_time).toLocaleString();
 
-                if(i % 2 == 0){  // left
-                    if (pic_url == undefined){
-
-                        // this result don't contain pic_url & message 
-                        if (message == undefined){
-                            myroute.innerHTML += '<li class="left"><h3 style="width=175px;">' + place_name + '</h3><div class="down_cont"><time>' + post_time + '</time></div></li>';
-                        } 
-
-                        // this result don't contain pic_url
-                        else {                        
-                            myroute.innerHTML += '<li class="left"><h3>' + place_name + '</h3><p>' + message + '</p><div class="down_cont"><time>' + post_time + '</time></div></li>';
-                        }
-
-                    } else {
-
-                        // this result don't contain message
-                        if (message == undefined){
-                            myroute.innerHTML += '<li class="left"><img src="' + pic_url + '" /><h3 style="width=175px;">' + place_name + '</h3><div class="down_cont"><time>' + post_time + '</time></div></li>';
-                        }
-
-                        // this result contains everything
-                        else {
-                            myroute.innerHTML += '<li class="left"><img src="' + pic_url + '" /><h3>' + place_name + '</h3><p>' + message + '</p><div class="down_cont"><time>' + post_time + '</time></div></li>';
-                        }
-                    }
-
-                    
-                } else {         // right
-                    if (pic_url == undefined){
-
-                        // this result don't contain pic_url & message 
-                        if (message == undefined){
-                            myroute.innerHTML += '<li class="right"><h3>' + place_name + '</h3><div class="down_cont"><time>' + post_time + '</time></div></li>';
-                        } 
-
-                        // this result don't contain pic_url
-                        else {                        
-                            myroute.innerHTML += '<li class="right"><h3>' + place_name + '</h3><p>' + message + '</p><div class="down_cont"><time>' + post_time + '</time></div></li>';
-                        }
-
-                    } else {
-
-                        // this result don't contain message
-                        if (message == undefined){
-                            myroute.innerHTML += '<li class="right"><img src="' + pic_url + '" /><h3>' + place_name + '</h3><div class="down_cont"><time>' + post_time + '</time></div></li>';
-                        }
-
-                        // this result contains everything
-                        else {
-                            myroute.innerHTML += '<li class="right"><img src="' + pic_url + '" /><h3>' + place_name + '</h3><p>' + message + '</p><div class="down_cont"><time>' + post_time + '</time></div></li>';
-                        }
-                    }
-                }
-    
-            }
-    
         }, function(error) {
             console.log("Error: " + error.code + " " + error.message);
 
@@ -1107,9 +2034,111 @@
 
 
 
-    };  // end function draw_route()
+    };  // end function route()
         
+    function draw_route(results){
 
+        console.log("in draw_route()");
+        console.log(results);
+
+        var RouteDiv = document.getElementById("route-div");
+        RouteDiv.style.display = "block";
+
+        var myroute = document.getElementById("myroute");
+        myroute.innerHTML = "";
+
+        for(var i = 0; i < results.length; i++){
+
+            var pic_url = results[i].attributes.pic_url;
+            var place_name = results[i].attributes.place_name;
+            var message = results[i].attributes.message;
+            var post_tags = results[i].attributes.tags;
+
+
+            //var post_time = new Date(results[i].attributes.created_time).toLocaleString();
+            var post_time = "";
+            post_time += new Date(results[i].attributes.created_time).getFullYear().toString() + "-";
+            var month = new Date(results[i].attributes.created_time).getMonth() + 1 ;
+            post_time += month.toString() + "-";
+            post_time += new Date(results[i].attributes.created_time).getDate().toString();
+
+
+            if(i % 2 == 0){  // left
+
+
+                /*****  fit in photos mainly  *****/
+
+                // X: place_name
+                if(place_name == undefined){
+
+                    // X: place_name, message
+                    if (message == undefined){
+                        myroute.innerHTML += '<li class="left"><img src="' + pic_url + '" /><h3>' + post_time + '</h3><div class="down_cont"><h5><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;' + post_tags + '</h5></div></li>';
+                    }
+
+                    // X: place_name    O: message
+                    else {
+                        myroute.innerHTML += '<li class="left"><img src="' + pic_url + '" /><h3>' + post_time + '</h3><p>' + message + '</p><div class="down_cont"><h5><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;' + post_tags + '</h5></div></li>';
+                    }
+
+                // O: place_name
+                } else {
+
+                    // O: place_name    X: message
+                    if (message == undefined){
+                        myroute.innerHTML += '<li class="left"><img src="' + pic_url + '" /><h3>' + post_time + '</h3><div class="down_cont"><h5><span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp;' + place_name + '<br><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;' + post_tags + '</h5></div></li>';
+                    }
+
+                    // O: place_name, message
+                    else {
+                        myroute.innerHTML += '<li class="left"><img src="' + pic_url + '" /><h3>' + post_time + '</h3><p>' + message + '</p><div class="down_cont"><h5><span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp;' + place_name + '<br><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;' + post_tags + '</h5></div></li>';
+                    }
+                }
+
+
+            }   // end if left
+
+
+
+            else {         // right
+
+
+                /*****  fit in photos mainly  *****/
+
+                // X: place_name
+                if(place_name == undefined){
+
+                    // X: place_name, message
+                    if (message == undefined){
+                        myroute.innerHTML += '<li class="right"><img src="' + pic_url + '" /><h3>' + post_time + '</h3><div class="down_cont"><h5><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;' + post_tags + '</h5></div></li>';
+                    }
+
+                    // X: place_name    O: message
+                    else {
+                        myroute.innerHTML += '<li class="right"><img src="' + pic_url + '" /><h3>' + post_time + '</h3><p>' + message + '</p><div class="down_cont"><h5><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;' + post_tags + '</h5></div></li>';
+                    }
+
+                // O: place_name
+                } else {
+
+                    // O: place_name    X: message
+                    if (message == undefined){
+                        myroute.innerHTML += '<li class="right"><img src="' + pic_url + '" /><h3>' + post_time + '</h3><div class="down_cont"><h5><span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp;' + place_name + '<br><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;' + post_tags + '</h5></div></li>';
+                    }
+
+                    // O: place_name, message
+                    else {
+                        myroute.innerHTML += '<li class="right"><img src="' + pic_url + '" /><h3>' + post_time + '</h3><p>' + message + '</p><div class="down_cont"><h5><span class="glyphicon glyphicon-map-marker"></span>&nbsp;&nbsp;' + place_name + '<br><span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;' + post_tags + '</h5></div></li>';
+                    }
+
+                }
+
+
+            }   // end if right
+
+
+        }   // end for
+    };  // end function draw_route()
 
 
 
@@ -1268,7 +2297,7 @@
         }   // end for
 */
 
-    //};  // end draw_route
+    //};  // end route
 </script>
 </body>
 </html>

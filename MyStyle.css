@@ -8,7 +8,15 @@ body{
 		display: block;
 	}
 }
-/* Sortable tables */
+
+
+
+
+/******************
+ Sortable tables 
+ ******************/
+
+
 table.sortable thead {
     background-color:#eee;
     color:#666666;
@@ -16,15 +24,17 @@ table.sortable thead {
     cursor: default;
 }
 
+
+
+
+
+
 #brand{
 	font-family: 'Gloria Hallelujah', cursive;
 }
 
 button{
 	font-family: 'Varela Round', sans-serif;
-}
-#my-logout-button{
-	margin-right: 20px;
 }
 
 dt, thead{
@@ -47,9 +57,169 @@ h2{
 }
 
 
-/*
- * draw my route using CSS3 
- */
+
+
+/****************************
+        photo wall
+ ****************************/
+
+
+ul#holder,li {
+  list-style:none;
+}
+ul#holder {
+  padding:5em;
+  font-size:0;
+  margin-bottom: 3em;
+  width:1230px;
+}   
+ul#holder li {
+  /*让贴纸在按行显示，可以使用float实现效果*/
+  display: inline-block;
+  *display:inline;
+  zoom:1;
+  margin:4em 2.3em 2em;
+  font-size:16px;
+}
+ul#holder img{
+  height:170px;
+  margin-top: 0.4em;
+}
+ul#holder a {
+  /*使用box-shadow制作阴影效果*/
+  -moz-box-shadow: 5px 5px 7px rgba(33,33,33,0.7);
+  -webkit-box-shadow: 5px 5px 7px rgba(33,33,33,0.7);
+  box-shadow: 5px 5px 7px rgba(33,33,33,0.7);
+  /*使用transform中的rotate制作旋转效果*/
+  -webkit-transform:rotate(-6deg);
+  -o-transform:rotate(-6deg);
+  -moz-transform:rotate(-6deg);
+  -ms-transform:rotate(-6deg);
+  transform:rotate(-6deg);
+  /*使用transition让变化更具生动性*/
+  -moz-transition: all .3s ease-in-out;
+  -webkit-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  -ms-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+  /*为后面的胶纸效果设定一个参照值*/
+  position:relative;
+  /*实现一个四方形的标签纸效果*/
+  display:inline-block;
+  height:12em;
+  font-size:17px;
+  text-align: center;
+  text-decoration:none;
+  color:#000;
+  background-color:#000; /* light blue:#d1e9ef; */
+  padding:1em;
+}
+/*使用CSS3伪类选择器中的":before"制作胶纸效果*/
+ul#holder a:before {
+  content:'';
+  position:absolute;
+  top:-25px; 
+  left: 20%;
+  width: 110px;
+  height: 40px;
+  background-color:rgba(250, 250, 240,0.3);     
+  border-left: 1px dashed rgba(0, 0, 0, 0.1);
+  border-right: 1px dashed rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
+}
+/*可以使用下面的代码去修改胶纸的内容 
+  ul#holder li:nth-child(n) a:before{
+  content: 'Your content';
+} */
+
+ul#holder p {
+  font-family: 'Mr Bedfort', cursive;
+  font-size:100%;
+}
+ul#holder h2 {
+  /*font-family: 'Eater', cursive;*/
+  font-size: 100%;
+  font-weight:bold;
+  margin:7px 0 0 0;
+  text-align: center;
+  /*padding-bottom:10px;
+  padding-top:5px;*/
+}
+  /*给第2，4，6，8...2n处的标签改变旋转值和背景色*/
+ul#holder li:nth-child(even) a {
+  -webkit-transform:rotate(4deg);
+  -o-transform:rotate(4deg);
+  -moz-transform:rotate(4deg);
+  -ms-transform:rotate(4deg);
+  transform:rotate(4deg);
+  position:relative;
+  top:5px;
+  background-color: #000; /* lavendar:#dedce7; */
+}
+/*给第3，6，9...3n处的标签改变旋转值和背景色*/
+ul#holder li:nth-child(3n) a {
+  -webkit-transform:rotate(-3deg);
+  -o-transform:rotate(-3deg);
+  -moz-transform:rotate(-3deg);
+  -ms-transform:rotate(-3deg);
+  transform:rotate(-3deg);
+  position:relative;
+  top:-5px;
+  background-color: #000; /* light grey:#d6d6d5; */
+}
+/*给第5,10,15...5n处的标签改变旋转值和背景色*/
+ul#holder li:nth-child(5n) a {
+  -webkit-transform:rotate(5deg);
+  -o-transform:rotate(5deg);
+  -moz-transform:rotate(5deg);
+  -ms-transform:rotate(5deg);
+  transform:rotate(5deg);
+  position:relative;
+  top:-10px;
+}
+/*改变对应的胶纸色*/
+ul#holder li:nth-child(even) a:before {
+  background-color:rgba(255,239,232,0.3);
+}
+
+ul#holder li:nth-child(3n) a:before {
+  background-color:  rgba(229,244,255,0.3);
+}
+ul#holder li a:hover,
+ul#holder li a:focus {
+  /*改变阴影效果*/
+  -moz-box-shadow: 10px 10px 7px rgba(0,0,0,0.7);
+  -webkit-box-shadow: 10px 10px 7px rgba(0,0,0,0.7);
+  box-shadow: 10px 10px 7px rgba(0,0,0,0.7);
+  /*使用transform中的scale将便签纸放大*/
+  -moz-transform: scale(1.25);
+  -webkit-transform: scale(1.25);
+  -o-transform: scale(1.25);
+  -ms-transform: scale(1.25);
+  transform: scale(1.25);
+  position: relative;
+  z-index:5;
+}
+ul#holder li a img{
+  -moz-transition: all .5s ease-in-out;
+  -webkit-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+}
+
+
+
+
+
+
+
+
+/****************************
+   draw my route using CSS3 
+ ****************************/
 
 
 * {
@@ -89,13 +259,13 @@ h2{
 #myroute li.left {
   float: left;
   clear: left;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 
 .left img{
   max-width:150px;
   border-radius: 90px 10px / 20px 30px;
-  margin: 0 20px 10px 0;
+  margin: 0 20px 15px 0;
   padding:2px;
   float:left;
 }
@@ -107,13 +277,12 @@ h2{
 }
 .left .down_cont{
   width: 350px;
-  height: 20px;
   border-top: 1px dotted #a6a6a6;
   float: left;
 }
-.left .down_cont time{
-  margin: 5px;
-  float :right;
+.left .down_cont h5{
+  margin: 10px 0 0 10px;
+  line-height:22px; 
 }
 
 
@@ -133,19 +302,19 @@ h2{
 }
 
 .right h3{
-  margin:10px 0 10px;
+  margin:10px 0 10px 5px;
 }
 .right p{
   float:left;
 }
 .right .down_cont{
   width: 350px;
-  height: 20px;
   border-top: 1px dotted #a6a6a6;
   float: left;
 }
-.right .down_cont time{
-  margin: 5px;
+.right .down_cont h5{
+  margin: 10px 0 0 10px;
+  line-height:22px; 
 }
 
 
@@ -220,7 +389,7 @@ h2{
 }
 
 
-/******************************************/
+/**************************************************************/
 
 
 /* svg elements */
