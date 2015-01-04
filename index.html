@@ -279,6 +279,7 @@
                         <th width="26%" style="text-align:center">Created time (GMT +0800)</th>
                         <th width="7%" style="text-align:center">From</th>
                         <th width="11%" style="text-align:center">Tags</th>
+                        <th width="5%" style="text-align:center">Photo</th>
                         <th width="20%" style="text-align:center">Place</th>
                         <th width="22%" style="text-align:center">Messages</th>      
                     </b></tr>
@@ -1411,6 +1412,7 @@
                             "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
                             "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
                             "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'><img src='"+results[i].attributes.pic_url+"' /></td>"+   // photo
                             "<td style='text-align:center'>"+place_name+"</td>"+   // place
                             "<td style='text-align:center'>"+messages+"</td>"+   // message
                         "</tr>";
