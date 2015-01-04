@@ -215,8 +215,8 @@
                     <dd id="my-profile-name"></dd>
                 </dl>
                 <dl class="dl-horizontal">
-                    <dt><b>Username</b></dt>
-                    <dd id="my-profile-username"></dd>
+                    <dt><b>Facebook ID</b></dt>
+                    <dd id="my-profile-facebook-id"></dd>
                 </dl>
                 <dl class="dl-horizontal">
                     <dt><b>Gender</b></dt>
@@ -225,10 +225,6 @@
                 <dl class="dl-horizontal">
                     <dt><b>Birthday</b></dt>
                     <dd id="my-profile-birthday"></dd>
-                </dl>
-                <dl class="dl-horizontal">
-                    <dt><b>Facebook ID</b></dt>
-                    <dd id="my-profile-facebook-id"></dd>
                 </dl>
             </div>
         </div>
@@ -386,9 +382,9 @@
 
                         success: function(user) {
                             if (!user.existed()) {
-                                alert("User signed up and logged in through Facebook!");
+                                console.log("User signed up and logged in through Facebook!");
                             } else {
-                                alert("User logged in through Facebook!");
+                                console.log("User logged in through Facebook!");
                             }
                             FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
                                 n=11111111;
@@ -397,7 +393,7 @@
                             });
                         },
                         error: function(user, error) {
-                            alert("User cancelled the Facebook login or did not fully authorize.");
+                            console.log("User cancelled the Facebook login or did not fully authorize.");
                         }
                     }); // end parse.fb.login
 
@@ -446,9 +442,9 @@
 
                         success: function(user) {
                             if (!user.existed()) {
-                                alert("User signed up and logged in through Facebook!");
+                                console.log("User signed up and logged in through Facebook!");
                             } else {
-                                alert("User logged in through Facebook!");
+                                console.log("User logged in through Facebook!");
                             }
 
                             FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
@@ -459,7 +455,7 @@
                             window.location.reload();
                         },
                         error: function(user, error) {
-                            alert("User cancelled the Facebook login or did not fully authorize.");
+                            console.log("User cancelled the Facebook login or did not fully authorize.");
                         }
                     }); // end parse.fb.login
 
@@ -469,9 +465,9 @@
 
                         success: function(user) {
                             if (!user.existed()) {
-                                alert("User signed up and logged in through Facebook!");
+                                console.log("User signed up and logged in through Facebook!");
                             } else {
-                                alert("User logged in through Facebook!");
+                                console.log("User logged in through Facebook!");
                             }
                             
                             FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
@@ -482,7 +478,7 @@
                             window.location.reload();
                         },
                         error: function(user, error) {
-                            alert("User cancelled the Facebook login or did not fully authorize.");
+                            console.log("User cancelled the Facebook login or did not fully authorize.");
                         }
                     }); // end parse.fb.login
 
@@ -537,9 +533,9 @@
 
                             success: function(user) {
                                 if (!user.existed()) {
-                                    alert("User signed up and logged in through Facebook!");
+                                    console.log("User signed up and logged in through Facebook!");
                                 } else {
-                                    alert("User logged in through Facebook!");
+                                    console.log("User logged in through Facebook!");
                                 }
                             
                                 FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
@@ -550,7 +546,7 @@
                                 window.location.reload();
                             },
                             error: function(user, error) {
-                                alert("User cancelled the Facebook login or did not fully authorize.");
+                                console.log("User cancelled the Facebook login or did not fully authorize.");
                             }
                         }); // end parse.fb.login
     
@@ -560,9 +556,9 @@
 
                             success: function(user) {
                                 if (!user.existed()) {
-                                    alert("User signed up and logged in through Facebook!");
+                                    console.log("User signed up and logged in through Facebook!");
                                 } else {
-                                    alert("User logged in through Facebook!");
+                                    console.log("User logged in through Facebook!");
                                 }
                             
                                 FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
@@ -573,7 +569,7 @@
                                 window.location.reload();
                             },
                             error: function(user, error) {
-                                alert("User cancelled the Facebook login or did not fully authorize.");
+                                console.log("User cancelled the Facebook login or did not fully authorize.");
                             }
                         }); // end parse.fb.login
                         
@@ -752,7 +748,6 @@
                 FB.api('/me', function(response) {
 
                     $("#my-profile-name").html(response.name);
-                    $("#my-profile-username").html(response.username);
                     $("#my-profile-gender").html(response.gender);
                     $("#my-profile-birthday").html(response.birthday);
                     $("#my-profile-facebook-id").html(response.id);
@@ -833,6 +828,23 @@
         function fbget_photos(userid, token) {
 
             console.log("in fbget_photos()");
+
+
+            var MapsDiv = document.getElementById("maps-div");
+            MapsDiv.style.display = "none";
+            var LocationDiv = document.getElementById("location-div");
+            LocationDiv.style.display = "none";
+            var RouteDiv = document.getElementById("route-div");
+            RouteDiv.style.display = "none";
+            var CalendarDiv = document.getElementById("calendar");
+            CalendarDiv.style.display = "none";
+
+            var MyProfileDiv = document.getElementById("my-profile");
+            MyProfileDiv.style.display = "block";
+
+            // show photo wall
+            var PhotoWallDiv = document.getElementById("photo-wall");
+            PhotoWallDiv.style.display = "block";
 
 
             var LoadingDiv = document.getElementById("loading-div");
