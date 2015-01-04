@@ -635,6 +635,8 @@
 
                 var LoadingDiv = document.getElementById("loading-div");
                 LoadingDiv.style.display="block";
+
+
                 var LocationDiv=document.getElementById("location-div");
                 LocationDiv.style.display="none";
                 var MapsDiv=document.getElementById("maps-div");
@@ -660,6 +662,8 @@
                 var LocationDiv=document.getElementById("location-div");
                 LocationDiv.style.display="block";
 
+                var LoadingDiv = document.getElementById("loading-div");
+                LoadingDiv.style.display="none";
                 var MyProfileDiv=document.getElementById("my-profile");
                 MyProfileDiv.style.display="none";
                 var MapsDiv=document.getElementById("maps-div");
@@ -688,6 +692,8 @@
                 RouteDiv.style.display="none";
                 var PhotoWallDiv = document.getElementById("photo-wall");
                 PhotoWallDiv.style.display = "none";
+                var LoadingDiv = document.getElementById("loading-div");
+                LoadingDiv.style.display="none";
 
 
                 // show calendar
@@ -1307,14 +1313,15 @@
 
                         tbody.innerHTML += 
                             "<tr id = tbody"+(i+1)+">"+
-                            "<td style='text-align:center'>"+(i+1)+"</td>"+
-                            "<td style='text-align:center'>"+results[i].attributes.post_id+"</td>"+   // id
-                            "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
-                            "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
-                            "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
-                            "<td style='text-align:center'>"+place_name+"</td>"+   // place
-                            "<td style='text-align:center'>"+messages+"</td>"+   // message
-                        "</tr>";
+                                "<td style='text-align:center'>"+(i+1)+"</td>"+
+                                "<td style='text-align:center'>"+results[i].attributes.post_id+"</td>"+   // id
+                                "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
+                                "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
+                                "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                                "<td style='text-align:center'><img src='"+results[i].attributes.pic_url+"' /></td>"+   // photo
+                                "<td style='text-align:center'>"+place_name+"</td>"+   // place
+                                "<td style='text-align:center'>"+messages+"</td>"+   // message
+                            "</tr>";
                     }   // end for
 
                 },
@@ -1499,6 +1506,7 @@
                             "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
                             "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
                             "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'><img src='"+results[i].attributes.pic_url+"' /></td>"+   // photo
                             "<td style='text-align:center'>"+place_name+"</td>"+   // place
                             "<td style='text-align:center'>"+messages+"</td>"+   // message
                         "</tr>";
@@ -1584,6 +1592,7 @@
                             "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
                             "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
                             "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'><img src='"+results[i].attributes.pic_url+"' /></td>"+   // photo
                             "<td style='text-align:center'>"+place_name+"</td>"+   // place
                             "<td style='text-align:center'>"+messages+"</td>"+   // message
                         "</tr>";
@@ -1671,6 +1680,7 @@
                             "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
                             "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
                             "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'><img src='"+results[i].attributes.pic_url+"' /></td>"+   // photo
                             "<td style='text-align:center'>"+place_name+"</td>"+   // place
                             "<td style='text-align:center'>"+messages+"</td>"+   // message
                         "</tr>";
@@ -1757,6 +1767,7 @@
                             "<td style='text-align:center'>"+created_time+"</td>"+   // created_time
                             "<td style='text-align:center'>"+results[i].attributes.from+"</td>"+   // from
                             "<td style='text-align:center'>"+results[i].attributes.tags+"</td>"+   // tags
+                            "<td style='text-align:center'><img src='"+results[i].attributes.pic_url+"' /></td>"+   // photo
                             "<td style='text-align:center'>"+place_name+"</td>"+   // place
                             "<td style='text-align:center'>"+messages+"</td>"+   // message
                         "</tr>";
