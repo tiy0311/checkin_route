@@ -362,7 +362,7 @@
                 e.src = document.location.protocol 
                     + '//connect.facebook.net/en_US/all.js';
                 document.getElementById('fb-root').appendChild(e);
-                console.log("all.js");
+                //console.log("all.js");
             }());
 
             FB.getLoginStatus(function(response) {
@@ -387,9 +387,9 @@
                                 console.log("User logged in through Facebook!");
                             }
                             FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                n=11111111;
-                                console.log('n='+n);
-                                console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                //n=11111111;
+                                //console.log('n='+n);
+                                //console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                             });
                         },
                         error: function(user, error) {
@@ -398,22 +398,20 @@
                     }); // end parse.fb.login
 
 
-                    n=2;
-                    console.log('n='+n);
+                    //n=2;
+                    //console.log('n='+n);
 
                     // when user has been logged in, this block will be triggered.
-                    //var msg = "Hi, You've logged in.";
-                    //$("#my-login-message").html(msg);
-                    console.log("Your login response:");
-                    console.log(response);  // 這裡的authResponse裡有access_token!
+                    //console.log("Your login response:");
+                    //console.log(response);  // 這裡的authResponse裡有access_token!
 
                     // get access token
                     ACCESS_TOKEN=response.authResponse.accessToken;
-                    console.log('ACCESS_TOKEN: '+ACCESS_TOKEN);
+                    //console.log('ACCESS_TOKEN: '+ACCESS_TOKEN);
 
                     // get user id
                     userid=response.authResponse.userID;
-                    console.log('userid: '+userid);
+                    //console.log('userid: '+userid);
 
 
                     // fetch the profile
@@ -442,15 +440,15 @@
 
                         success: function(user) {
                             if (!user.existed()) {
-                                console.log("User signed up and logged in through Facebook!");
+                                //console.log("User signed up and logged in through Facebook!");
                             } else {
-                                console.log("User logged in through Facebook!");
+                                //console.log("User logged in through Facebook!");
                             }
 
                             FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                n=333333333;
-                                console.log('n='+n);
-                                console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                //n=333333333;
+                                //console.log('n='+n);
+                                //console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                             });
                             window.location.reload();
                         },
@@ -471,9 +469,9 @@
                             }
                             
                             FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                n=4444444444;
-                                console.log('n='+n);
-                                console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                //n=4444444444;
+                                //console.log('n='+n);
+                                //console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                             });
                             window.location.reload();
                         },
@@ -505,22 +503,22 @@
                         var warningDiv = document.getElementById("warning-div");
                         warningDiv.style.display = "block";
 
-                        n=5;
-                        console.log('n='+n);
+                        //n=5;
+                        //console.log('n='+n);
 
                         // when user has been logged in, this block will be triggered.
                         var msg = "Hi, You've logged in.";
                         $("#my-login-message").html(msg);
-                        console.log("Your login response:");
-                        console.log(response);  // 這裡的authResponse裡有access_token!
+                        //console.log("Your login response:");
+                        //console.log(response);  // 這裡的authResponse裡有access_token!
 
                         // get access token
                         ACCESS_TOKEN=response.authResponse.accessToken;
-                        console.log('ACCESS_TOKEN: '+ACCESS_TOKEN);
+                        //console.log('ACCESS_TOKEN: '+ACCESS_TOKEN);
 
                         // get user id
                         userid=response.authResponse.userID;
-                        console.log('userid: '+userid);
+                        //console.log('userid: '+userid);
 
                         // fetch the profile
                         var ProfileDiv=document.getElementById("my-profile");
@@ -539,9 +537,9 @@
                                 }
                             
                                 FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                    n=666666666666;
-                                    console.log('n='+n);
-                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                    //n=666666666666;
+                                    //console.log('n='+n);
+                                    //console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                                 });
                                 window.location.reload();
                             },
@@ -562,9 +560,9 @@
                                 }
                             
                                 FB.api('/me', function(response) { // 原本是info 然後response.name是undefined。 改成response後,response.name就是許惟琄了！
-                                    n=777777777777;
-                                    console.log('n='+n);
-                                    console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
+                                    //n=777777777777;
+                                    //console.log('n='+n);
+                                    //console.log('Good to see you, ' + response.name + '.'); // response.name是許惟琄
                                 });
                                 window.location.reload();
                             },
@@ -579,9 +577,9 @@
             });     // end login btn click
 
             $("#my-logout-button").click(function(){
-                console.log("click on my-logout-button");
-                n=0;
-                console.log('n='+n);    // 按了logout後，n=6
+                //console.log("click on my-logout-button");
+                //n=0;
+                //console.log('n='+n);    // 按了logout後，n=6
 
                 FB.logout(function(response){
                     var logoutControlDiv = document.getElementById("my-login-control");
@@ -589,11 +587,11 @@
                     var loginControlDiv = document.getElementById("my-logout-control");
                     loginControlDiv.style.display = "none";
 
-                    n=0.5;
-                    console.log('n='+n);
+                    //n=0.5;
+                    //console.log('n='+n);
 
-                    console.log("Your logout response:");
-                    console.log(response);
+                    //console.log("Your logout response:");
+                    //console.log(response);
                     alert('You are logging out. Bye!');
                 });
 
@@ -602,7 +600,7 @@
             });
 
             $("#user-info").click(function(){
-                console.log('Now you click the user button.....');
+                //console.log('Now you click the user button.....');
 
                 var MapsDiv = document.getElementById("maps-div");
                 MapsDiv.style.display = "none";
@@ -624,7 +622,7 @@
             });
 
             $("#from-locations-button").click(function(){
-                console.log('Now you click the fetch button.....');
+                //console.log('Now you click the fetch button.....');
 
                 var MyProfileDiv=document.getElementById("my-profile");
                 MyProfileDiv.style.display="block";
@@ -646,14 +644,14 @@
 
                 setCookie("ACCESS_TOKEN", ACCESS_TOKEN);    
 
-                console.log('userid: '+userid);             // correct
-                console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
+                //console.log('userid: '+userid);             // correct
+                //console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
                 fbget_photos(userid, ACCESS_TOKEN);
                 //fbget_feed(userid,ACCESS_TOKEN);
             });
 
             $("#demonstrate-as-table-button").click(function(){
-                console.log('Now you click the demostrate button.....');
+                //console.log('Now you click the demostrate button.....');
 
                 var LocationDiv=document.getElementById("location-div");
                 LocationDiv.style.display="block";
@@ -678,7 +676,7 @@
             });
 
             $("#maps").click(function(){
-                console.log('Now you click the Visualization button.....');
+                //console.log('Now you click the Visualization button.....');
 
                 var MyProfileDiv=document.getElementById("my-profile");
                 MyProfileDiv.style.display="none";
@@ -702,8 +700,8 @@
 
                 setCookie("ACCESS_TOKEN", ACCESS_TOKEN);    
 
-                console.log('userid: '+userid);             // correct
-                console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
+                //console.log('userid: '+userid);             // correct
+                //console.log('ACCESS_TOKEN: '+ACCESS_TOKEN); // correct
                 //fbget(userid, ACCESS_TOKEN);
                 demo_map(userid, ACCESS_TOKEN);
 
@@ -713,7 +711,7 @@
             });
 
             $("#draw-route").click(function(){
-                console.log('Now you click the draw-route button.....');
+                //console.log('Now you click the draw-route button.....');
 
                 var MyProfileDiv=document.getElementById("my-profile");
                 MyProfileDiv.style.display="none";
@@ -788,7 +786,7 @@
     <script> 
 
         function photo_wall(){
-            console.log("in photo_wall() ");
+            //console.log("in photo_wall() ");
 
 
             $('#photo-wall ul').empty();
@@ -801,8 +799,8 @@
             query.descending("created_time");
             query.find({
                 success: function(results) {
-                    console.log("Successfully retrieved " + results.length + " results.");
-                    console.log(results);
+                    //console.log("Successfully retrieved " + results.length + " results.");
+                    //console.log(results);
                     for (var i = 0; i < results.length; i++) { 
 
                         $('#photo-wall ul').append(
@@ -827,7 +825,7 @@
 
         function fbget_photos(userid, token) {
 
-            console.log("in fbget_photos()");
+            //console.log("in fbget_photos()");
 
 
             var MapsDiv = document.getElementById("maps-div");
@@ -862,12 +860,12 @@
                     var data = response;
 
                     //console.log('data.data.length: '+data.data.length);
-                    console.log('in fbget_photos and the data is');
-                    console.log(data);
+                    //console.log('in fbget_photos and the data is');
+                    //console.log(data);
 
                     
-                    console.log('paging:');
-                    console.log(data.paging.next);
+                    //console.log('paging:');
+                    //console.log(data.paging.next);
                     var next_page = data.paging.next;
 
 
@@ -895,19 +893,19 @@
         
                 function insertIntoDB(data,N){
 
-                    console.log("in insertIntoDB()");
-                    console.log(data);
+                    //console.log("in insertIntoDB()");
+                    //console.log(data);
 
                     var Node = Parse.Object.extend("Node");
                     var query = new Parse.Query(Node);
                     query.equalTo("post_id", data.id);
-                    console.log("querying-----------------post_id:"+data.id);
+                    //console.log("querying-----------------post_id:"+data.id);
 
 
                     // check if data has already been existed in parse database.    
                     query.find().then( function(results) {
                         
-                        console.log("Query successfully!!! results --> " + results.length + "                (0 --> no existed // 1 --> existed)");
+                        //console.log("Query successfully!!! results --> " + results.length + "                (0 --> no existed // 1 --> existed)");
 
                         // no existed data in DB, so insert new data into DB
                         if(results.length == 0 ){
@@ -969,7 +967,7 @@
                         }   // end if
                     }).then(function(node){
 
-                        console.log('New object created with objectId: ' + node.id);
+                        //console.log('New object created with objectId: ' + node.id);
 
                         if( N % 20 == 0)
                             $('#photo-wall ul').empty();
@@ -996,14 +994,14 @@
                         if(response && !response.error) {      
                             var data = response;
 
-                            console.log('data.data.length: '+data.data.length);
-                            console.log('in fbget_photos paging and the data is');
-                            console.log(data);
+                            //console.log('data.data.length: '+data.data.length);
+                            //console.log('in fbget_photos paging and the data is');
+                            //console.log(data);
                             //console.dir(response);
 
 
-                            console.log('paging:');
-                            console.log(data.paging.next);
+                            //console.log('paging:');
+                            //console.log(data.paging.next);
                             var next_page = data.paging.next;
 
                                 
@@ -1033,8 +1031,8 @@
                                 paging_photos(next_page,userid,token);
                             }
                             else {
-                                console.log("fbget_photos finish.");
-                                console.log("start fbget_feed.");
+                                //console.log("fbget_photos finish.");
+                                //console.log("start fbget_feed.");
                                 fbget_feed(userid,token);
                             }
 
@@ -1050,12 +1048,12 @@
 
         function fbget_feed(userid, token) {
 
-            console.log("in fbget_feed()");
+            //console.log("in fbget_feed()");
   
             var last_tags_length;
             var post_counter = 0;
             //var created_time;
-            console.log(userid);
+            //console.log(userid);
 
             //FB.api("/me/photos?fields=id", function (response) {
             //FB.api("/v2.0/"+userid+"?fields=tagged_places", function (response) {
@@ -1066,16 +1064,16 @@
                     var data = response;
 
                     //console.log('data.data.length: '+data.data.length);
-                    console.log('in fbget_feed and the data is');
-                    console.log(data);
+                    //console.log('in fbget_feed and the data is');
+                    //console.log(data);
                     //console.dir(response);
 
                     
-                    console.log('paging:');
+                    //console.log('paging:');
                     //console.log(data.paging.next);
                     var next_page = data.paging.next;
-                    console.log('   next_page:');
-                    console.log(next_page);
+                    //console.log('   next_page:');
+                    //console.log(next_page);
 
 
 
@@ -1108,20 +1106,20 @@
         
                 function insertIntoDB(data,N){
 
-                    console.log("in insertIntoDB()");
-                    console.log(data);
+                    //console.log("in insertIntoDB()");
+                    //console.log(data);
 
                     var Node = Parse.Object.extend("Node");
                     var query = new Parse.Query(Node);
                     query.equalTo("post_id", data.id);
-                    console.log("querying-----------------post_id:"+data.id);
+                    //console.log("querying-----------------post_id:"+data.id);
 
 
                     // check if data has already been existed in parse database.    
                     //query.find().then( function(results) {
                     query.find({
                         success: function(results) {
-                            console.log("Query successfully!!! results --> " + results.length + "                (0 --> no existed // 1 --> existed)");
+                            //console.log("Query successfully!!! results --> " + results.length + "                (0 --> no existed // 1 --> existed)");
                             //console.log(results);
                             //console.log(data);
 
@@ -1199,7 +1197,7 @@
                                 }   // end if
                                 
                             }).then(function(node){
-                                console.log('New object created with objectId: ' + node.id);
+                                //console.log('New object created with objectId: ' + node.id);
                                 //console.log(node);
 
                                 if( N % 20 == 0)
@@ -1238,17 +1236,17 @@
                         if(response && !response.error) {      
                             var data = response;
 
-                            console.log('data.data.length: '+data.data.length);
-                            console.log('in fbget_feed paging and the data is');
-                            console.log(data);
+                            //console.log('data.data.length: '+data.data.length);
+                            //console.log('in fbget_feed paging and the data is');
+                            //console.log(data);
                             //console.dir(response);
 
                             if(data.data.length > 0){
-                                console.log('paging:');
-                                console.log(data.paging.next);
+                                //console.log('paging:');
+                                //console.log(data.paging.next);
                                 var next_page = data.paging.next;
                             } else {
-                                console.log('data.data.length <= 0');
+                                //console.log('data.data.length <= 0');
 
                                 
                                 //setTimeout(function(){
@@ -1309,8 +1307,8 @@
             query.descending("created_time");
             query.find({
                 success: function(results) {
-                    console.log("Successfully retrieved " + results.length + " scores.");
-                    console.log(results);
+                    //console.log("Successfully retrieved " + results.length + " scores.");
+                    //console.log(results);
                     for (var i = 0; i < results.length; i++) { 
 
                         var created_time = new Date(results[i].attributes.created_time).toLocaleString();
@@ -1338,14 +1336,14 @@
 
                 },
                 error: function(error) {
-                    console.log("Error: " + error.code + " " + error.message);
+                    //console.log("Error: " + error.code + " " + error.message);
                 }
             }); // end query
 
         };  // end function demo_table
 
         function searchAll(){
-            console.log("now search All!");
+            //console.log("now search All!");
 
 
             var LocationDiv = document.getElementById("location-div");
@@ -1367,7 +1365,7 @@
 
 
             var search_text = document.getElementById("search_text").value;
-            console.log("search_text:"+search_text);
+            //console.log("search_text:"+search_text);
 
             var tbody = document.getElementById("tbody");
             tbody.innerHTML = "";
@@ -1394,8 +1392,8 @@
             mainQuery.descending("created_time");
             mainQuery.find().then(function(results) {
 
-                console.log("Successfully retrieved " + results.length + " results of all.");
-                console.log(results);
+                //console.log("Successfully retrieved " + results.length + " results of all.");
+                //console.log(results);
 
 
                 if(results.length == 0){
@@ -1445,7 +1443,7 @@
 
 
         function searchFrom(){
-            console.log("now search From!");
+            //console.log("now search From!");
 
 
             var LocationDiv = document.getElementById("location-div");
@@ -1467,7 +1465,7 @@
 
 
             var search_text = document.getElementById("search_text").value;
-            console.log("search_text:"+search_text);
+            //console.log("search_text:"+search_text);
 
             var tbody = document.getElementById("tbody");
             tbody.innerHTML = "";
@@ -1481,8 +1479,8 @@
             query.contains("from",search_text);
             query.find().then(function(results) {
 
-                console.log("Successfully retrieved " + results.length + " results of from.");
-                console.log(results);
+                //console.log("Successfully retrieved " + results.length + " results of from.");
+                //console.log(results);
 
 
                 if(results.length == 0){
@@ -1531,7 +1529,7 @@
 
 
         function searchTags(){
-            console.log("now search Tags!");
+            //console.log("now search Tags!");
 
 
             var LocationDiv = document.getElementById("location-div");
@@ -1553,7 +1551,7 @@
 
 
             var search_text = document.getElementById("search_text").value;
-            console.log("search_text:"+search_text);
+            //console.log("search_text:"+search_text);
 
             var tbody = document.getElementById("tbody");
             tbody.innerHTML = "";
@@ -1567,8 +1565,8 @@
             query.contains("tags",search_text);
             query.find().then(function(results) {
 
-                console.log("Successfully retrieved " + results.length + " results of tags.");
-                console.log(results);
+                //console.log("Successfully retrieved " + results.length + " results of tags.");
+                //console.log(results);
 
 
                 if(results.length == 0){
@@ -1619,7 +1617,7 @@
 
 
         function searchPlace(){
-            console.log("now search Place Name!");
+            //console.log("now search Place Name!");
 
 
             var LocationDiv = document.getElementById("location-div");
@@ -1641,7 +1639,7 @@
 
 
             var search_text = document.getElementById("search_text").value;
-            console.log("search_text:"+search_text);
+            //console.log("search_text:"+search_text);
 
             var tbody = document.getElementById("tbody");
             tbody.innerHTML = "";
@@ -1655,8 +1653,8 @@
             query.contains("place_name",search_text);
             query.find().then(function(results) {
 
-                console.log("Successfully retrieved " + results.length + " results of place_name.");
-                console.log(results);
+                //console.log("Successfully retrieved " + results.length + " results of place_name.");
+                //console.log(results);
 
 
                 if(results.length == 0){
@@ -1706,7 +1704,7 @@
 
 
         function searchMessage(){
-            console.log("now search Messages!");
+            //console.log("now search Messages!");
 
 
             var LocationDiv = document.getElementById("location-div");
@@ -1728,7 +1726,7 @@
 
 
             var search_text = document.getElementById("search_text").value;
-            console.log("search_text:"+search_text);
+            //console.log("search_text:"+search_text);
 
             var tbody = document.getElementById("tbody");
             tbody.innerHTML = "";
@@ -1742,8 +1740,8 @@
             query.contains("message",search_text);
             query.find().then(function(results) {
 
-                console.log("Successfully retrieved " + results.length + " results of messages.");
-                console.log(results);
+                //console.log("Successfully retrieved " + results.length + " results of messages.");
+                //console.log(results);
 
 
                 if(results.length == 0){
@@ -1808,8 +1806,8 @@
         query.descending("created_time");
         query.find({
             success: function(results) {
-                console.log("Successfully retrieved " + results.length + " scores.");
-                console.log(results);
+                //console.log("Successfully retrieved " + results.length + " scores.");
+                //console.log(results);
 
                 initialize();
 
@@ -1865,7 +1863,7 @@
 
     function initialize() {
 
-        console.log("in initialize()");
+        //console.log("in initialize()");
         //console.log(data);
 
         map = new google.maps.Map(document.getElementById('maps-div'), {
@@ -1880,7 +1878,7 @@
 
     var prev_infowindow = null;
     function addSite(map, node) {
-        console.log('in addSite()');
+        //console.log('in addSite()');
         //console.log(node);
 
         var post_time = new Date(node.attributes.created_time).toLocaleString();
@@ -1977,17 +1975,17 @@
 
     function selectDate(){
 
-        console.log("in selectDate()");
+        //console.log("in selectDate()");
 
         var d_from = document.getElementById("from").value;
-        console.log("d_from:"+d_from);
+        //console.log("d_from:"+d_from);
         var d_to = document.getElementById("to").value;
-        console.log("d_to:"+d_to);
+        //console.log("d_to:"+d_to);
 
         var date_from = new Date(d_from.slice(6,10), d_from.slice(0,2)-1, d_from.slice(3,5) );
         var date_to = new Date(d_to.slice(6,10), d_to.slice(0,2)-1, d_to.slice(3,5) );
-        console.log("date_from:"+date_from);
-        console.log("date_to"+date_to);
+        //console.log("date_from:"+date_from);
+        //console.log("date_to"+date_to);
 
 
         var user = Parse.User.current();
@@ -1999,8 +1997,8 @@
         query.descending("created_time");
         query.find({
             success: function(results) {
-                console.log("Successfully retrieved " + results.length + " scores.");
-                console.log(results);
+                //console.log("Successfully retrieved " + results.length + " scores.");
+                //console.log(results);
 
                 initialize();
 
@@ -2033,7 +2031,7 @@
 </script>
 <script type="text/javascript" language="javascript">
     function route(){
-        console.log('in route()');
+        //console.log('in route()');
 
         //var my_svg = document.getElementById("my-svg");
 
@@ -2047,8 +2045,8 @@
         query.descending("created_time");
         query.find().then( function(results) {
 
-            console.log("Successfully retrieved " + results.length + " scores.");
-            console.log(results);
+            //console.log("Successfully retrieved " + results.length + " scores.");
+            //console.log(results);
 
             draw_route(results);
 
@@ -2064,8 +2062,8 @@
         
     function draw_route(results){
 
-        console.log("in draw_route()");
-        console.log(results);
+        //console.log("in draw_route()");
+        //console.log(results);
 
         var RouteDiv = document.getElementById("route-div");
         RouteDiv.style.display = "block";
